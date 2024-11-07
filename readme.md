@@ -6,7 +6,11 @@
 
 ## Features
 
-TODO:
+- Singleplayer mode
+- Play versus an AI opponent with customizable difficulty levels
+- Track your statistics to help you enhance your SIGMA skills
+- Customize card shapes and colors
+- Save your progress accross multiple profiles
 
 ## Installation
 
@@ -16,11 +20,19 @@ TODO:
 
 ### Part 1
 
-TODO:
+- Basic game loop for signleplayer mode
+- Display, UI
+- Implement an AI opponent
+- Track basic stats such as best time and number of games played
 
 ### Part 2
 
-TODO:
+- Handle dynamically displaying cards from a base shape
+- Enable saving progress/settings
+- Customizable AI difficulty
+- Customizable UI
+- More stat tracking, including graphs such as time between sets etc
+- Possibly a tutorial
 
 ## Authors
 
@@ -28,4 +40,4 @@ Mikołaj Bilski (gh: [@mikolajbilski](https://github.com/mikolajbilski))
 
 ## Libraries
 
-TODO:
+[Tetra](https://github.com/17cupsofcoffee/Tetra)
