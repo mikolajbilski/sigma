@@ -40,4 +40,4 @@ Mikołaj Bilski (gh: [@mikolajbilski](https://github.com/mikolajbilski))
 
 ## Libraries
 
-[Tetra](https://github.com/17cupsofcoffee/Tetra)
+[Bevy Game Engine](https://github.com/bevyengine/bevy)
