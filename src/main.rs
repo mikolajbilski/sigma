@@ -4,7 +4,7 @@ use tetra::{Context, ContextBuilder, State};
 const DEFAULT_WINDOW_WIDTH: f32 = 1280.0;
 const DEFAULT_WINDOW_HEIGHT: f32 = 720.0;
 
-const DEFAULT_SCREEN_BACKGROUND: Color = Color::rgb(0.392, 0.584, 0.929);
+const DEFAULT_SCREEN_BACKGROUND: Color = Color::rgb(0.208, 0.631, 0.035);
 
 fn main() -> tetra::Result {
     ContextBuilder::new("SIGMA", DEFAULT_WINDOW_WIDTH as i32, DEFAULT_WINDOW_HEIGHT as i32)
