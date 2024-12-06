@@ -1,1 +1,34 @@
-/target
+# Generated files
+/target/
+**/*.rs.bk
+
+# Cargo specific files
+Cargo.lock
+
+# IDE/editor specific files
+.idea/
+.vscode/
+*.iml
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Debugging files
+*.log
+*.trace
+
+# Backup files
+*.swp
+*.swo
+*.bak
+*.tmp
+*.old
+
+# Binary files
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.rlib
