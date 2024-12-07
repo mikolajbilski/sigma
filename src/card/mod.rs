@@ -1,27 +1,30 @@
 pub mod deck;
 pub use deck::Deck;
+pub mod properties;
+use properties::*;
 
 use bevy::prelude::*;
 
 #[derive(Component, Debug)]
 pub struct Card {
     shape: Shape,
-    color: Color,
+    color: CardColor,
     count: Count,
     fill: Fill,
 }
 
 impl Card {
+    //TODO: temp (testing)
     pub fn default() -> Self {
         Card {
             shape: Shape::Oval,
-            color: Color::Red,
+            color: CardColor::Red,
             count: Count::One,
             fill: Fill::Opaque,
         }
     }
 
-    fn new(shape: Shape, color: Color, count: Count, fill: Fill) -> Self {
+    fn new(shape: Shape, color: CardColor, count: Count, fill: Fill) -> Self {
         Card {
             shape,
             color,
@@ -30,9 +33,21 @@ impl Card {
         }
     }
 
+    pub fn get_texture_color(&self) -> Color {
+        self.color.as_color()
+    }
+
+    pub fn get_count(&self) -> i32 {
+        self.count.as_number()
+    }
+
+    pub fn get_asset_path(&self) -> String {
+        format!("sprites/cards/{}_{}.png", self.shape.as_name(), self.fill.as_name())
+    }
+
     pub(crate) fn generate_all() -> Vec<Self> {
         let shapes = Shape::all_variants();
-        let colors = Color::all_variants();
+        let colors = CardColor::all_variants();
         let counts = Count::all_variants();
         let fills   = Fill::all_variants();
 
@@ -52,54 +67,3 @@ impl Card {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
-enum Shape {
-    Oval,
-    Diamond,
-    Squiggle,
-}
-
-impl Shape {
-    pub(crate) fn all_variants() -> Vec<Shape> {
-        vec![Shape::Oval, Shape::Diamond, Shape::Squiggle]
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-enum Color {
-    Red,
-    Green,
-    Purple,
-}
-
-impl Color {
-    pub(crate) fn all_variants() -> Vec<Color> {
-        vec![Color::Red, Color::Green, Color::Purple]
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-enum Count {
-    One,
-    Two,
-    Three,
-}
-
-impl Count {
-    pub(crate) fn all_variants() -> Vec<Count> {
-        vec![Count::One, Count::Two, Count::Three]
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-enum Fill {
-    Opaque,
-    Striped,
-    Transparent,
-}
-
-impl Fill {
-    pub(crate) fn all_variants() -> Vec<Fill> {
-        vec![Fill::Opaque, Fill::Striped, Fill::Transparent]
-    }
-}

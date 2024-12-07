@@ -21,10 +21,12 @@ pub fn spawn_card(
 
     //let mut sprite: Handle<Image> = asset_server.load("sprites/diamond.png");
 
+    let card = card::Card::default();
+
     commands.spawn((
         SpriteBundle {
             transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0).with_scale(vec3(0.5, 0.5, 1.0)),
-            texture: asset_server.load("sprites/diamond.png"),
+            texture: asset_server.load(card.get_asset_path()),
             ..default()
         },
         card::Deck::new(),
