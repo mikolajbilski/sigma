@@ -29,7 +29,30 @@ pub fn spawn_card(
 
     let col = card.get_texture_color();
 
-    let mut spb = SpriteBundle {
+
+    let background_handle = asset_server.load("sprites/general/card_background.png");
+    let content_handle = asset_server.load(card.get_asset_path());
+
+    commands
+        .spawn(SpriteBundle {
+            transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
+            texture: background_handle.clone(),
+            ..Default::default()
+        })
+        .with_children(|parent| {
+            // Spawn the content sprite as a child
+            parent.spawn(SpriteBundle {
+                texture: content_handle.clone(),
+                transform: Transform::from_xyz(0.0, 0.0, 1.0),
+                sprite: Sprite {
+                    color: col,
+                    ..default()
+                },
+                ..Default::default()
+            });
+        });
+
+    /* let mut spb = SpriteBundle {
         transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
         texture: asset_server.load(card.get_asset_path()),
         ..default()
@@ -40,7 +63,7 @@ pub fn spawn_card(
     commands.spawn((
         spb,
         card::Deck::new(),
-    ));
+    )); */
 }
 
 pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
