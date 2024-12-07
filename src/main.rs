@@ -27,7 +27,7 @@ pub fn spawn_card(
             texture: asset_server.load("sprites/diamond.png"),
             ..default()
         },
-        card::Card::new(),
+        card::Deck::new(),
     ));
 }
 
