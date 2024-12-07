@@ -1,3 +1,5 @@
+mod card;
+
 use bevy::math::vec3;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
@@ -9,9 +11,6 @@ fn main() {
         .add_systems(Startup, spawn_card)
         .run();
 }
-
-#[derive(Component)]
-pub struct Card {}
 
 pub fn spawn_card(
     mut commands: Commands,
@@ -28,7 +27,7 @@ pub fn spawn_card(
             texture: asset_server.load("sprites/diamond.png"),
             ..default()
         },
-        Card {},
+        card::Card::new(),
     ));
 }
 
