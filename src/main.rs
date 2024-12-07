@@ -30,10 +30,13 @@ pub fn spawn_card(
     let col = card.get_texture_color();
 
 
-    let background_handle = asset_server.load("sprites/general/card_background.png");
-    let content_handle = asset_server.load(card.get_asset_path());
+    /* let background_handle = asset_server.load("sprites/general/card_background.png");
+    let content_handle = asset_server.load(card.get_asset_path()); */
 
-    commands
+    commands.spawn(TransformBundle::from_transform(Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0))) // Initial card position
+    .with_children(card.generate_card_entity(&asset_server));
+
+    /* commands
         .spawn(SpriteBundle {
             transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
             texture: background_handle.clone(),
@@ -50,7 +53,7 @@ pub fn spawn_card(
                 },
                 ..Default::default()
             });
-        });
+        }); */
 
     /* let mut spb = SpriteBundle {
         transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
