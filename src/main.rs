@@ -21,14 +21,24 @@ pub fn spawn_card(
 
     //let mut sprite: Handle<Image> = asset_server.load("sprites/diamond.png");
 
-    let card = card::Card::default();
+    let deck = card::Deck::new();
+
+
+
+    let card = deck.peek();
+
+    let col = card.get_texture_color();
+
+    let mut spb = SpriteBundle {
+        transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
+        texture: asset_server.load(card.get_asset_path()),
+        ..default()
+    };
+
+    spb.sprite.color = col;
 
     commands.spawn((
-        SpriteBundle {
-            transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0).with_scale(vec3(0.5, 0.5, 1.0)),
-            texture: asset_server.load(card.get_asset_path()),
-            ..default()
-        },
+        spb,
         card::Deck::new(),
     ));
 }

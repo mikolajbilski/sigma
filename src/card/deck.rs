@@ -23,4 +23,8 @@ impl Deck {
             cards,
         }
     }
+
+    pub fn peek(&self) -> Card {
+        self.cards.first().unwrap().clone()
+    }
 }

@@ -5,7 +5,7 @@ use properties::*;
 
 use bevy::prelude::*;
 
-#[derive(Component, Debug)]
+#[derive(Component, Debug, Clone, Copy)]
 pub struct Card {
     shape: Shape,
     color: CardColor,
