@@ -1,3 +1,3 @@
-mod game_manager;
-mod playing_field;
+pub mod game_manager;
+pub mod playing_field;
 mod set;

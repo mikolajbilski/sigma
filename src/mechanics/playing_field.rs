@@ -1,8 +1,8 @@
 use bevy::prelude::*;
 
-use crate::card::Card;
+use crate::{card::Card, mechanics::playing_field};
 
-use super::set::is_set;
+use super::{game_manager::GameManager, set::is_set};
 
 #[derive(Component)]
 pub struct PlayingField {
@@ -12,15 +12,44 @@ pub struct PlayingField {
 
 pub fn display(
     mut commands: Commands,
-    field_query: Query<&PlayingField>,
+    field_query: Query<&GameManager>,
     asset_server: Res<AssetServer>,
 ) {
-    if let Ok(playing_field) = field_query.get_single() {
-        let no_cards = playing_field.cards_count();
-        match no_cards {
-            12 => {}
-            _ => {}
+    if let Ok(game_manager) = field_query.get_single() {
+        let playing_field = game_manager.get_playing_field();
+        let cards_count = playing_field.cards_count();
+        let rows = cards_count / 3;
+
+        const COLUMN_X: &[f32] = &[-250.0, 0.0, 250.0];
+        // rows are displayed top to bottom, apart from the *REALLY* rare last row
+        const ROW_Y: &[f32] = &[240.0, 80.0, -80.0, -240.0, -400.0, -560.0, 400.0];
+
+        let cards = playing_field.get_cards();
+
+        for row_no in 0..rows {
+            for column_no in 0..3 {
+                let card_id = 3 * row_no + column_no;
+                if card_id < cards_count {
+                    if let Some(card) = cards[card_id] {
+                        println!("Row: {row_no}, column: {column_no}, card: {card_id}");
+                        println!("x: {}, y: {}, card: {card_id}", 600.0 + ROW_Y[row_no], 400.0 + COLUMN_X[column_no]);
+                        // Display this card
+                        commands
+                            .spawn(TransformBundle {
+                                local: Transform::from_xyz(
+                                    600.0 + COLUMN_X[column_no],
+                                    400.0 + ROW_Y[row_no],
+                                    0.0,
+                                ),
+                                ..Default::default()
+                            })
+                            .with_children(card.generate_card_entity(&asset_server));
+                    }
+                }
+            }
         }
+    } else {
+        println!("No game manager found!");
     }
 }
 
@@ -59,6 +88,10 @@ impl PlayingField {
 
     pub fn cards_count(&self) -> usize {
         self.cards.iter().filter(|card| card.is_some()).count()
+    }
+
+    pub(crate) fn get_cards(&self) -> Vec<&Option<Card>> {
+        self.cards.iter().filter(|card| card.is_some()).collect()
     }
 
     // "compress" the playing field, removing any None spaces

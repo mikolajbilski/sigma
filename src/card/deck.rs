@@ -32,7 +32,7 @@ impl Deck {
 
     // Return no_cards from the top of the deck, removing them from the deck
     // If there are less cards in the deck than requested, returns all the remaining cards
-    pub fn get_cards(&mut self, no_cards: usize) -> Vec<Card> {
+    pub fn take_cards(&mut self, no_cards: usize) -> Vec<Card> {
         let mut taken = vec![];
 
         for _ in 0..no_cards {

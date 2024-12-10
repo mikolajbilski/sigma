@@ -1,6 +1,8 @@
 mod card;
 mod mechanics;
 
+use crate::mechanics::game_manager::GameManager;
+use crate::mechanics::playing_field;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
@@ -19,8 +21,17 @@ fn main() {
             ..default()
         }))
         .add_systems(Startup, spawn_camera)
-        .add_systems(Startup, spawn_card)
+        .add_systems(Startup, (startup, start_game, playing_field::display).chain())
         .run();
+}
+
+pub fn startup(mut commands: Commands) {
+    commands.spawn(GameManager::new());
+}
+
+pub fn start_game(mut game_query: Query<&mut GameManager>) {
+    let game_manager  = game_query.get_single_mut().unwrap().into_inner();
+    game_manager.start_game();
 }
 
 pub fn spawn_card(
