@@ -29,6 +29,11 @@ impl PlayingField {
         }
     }
 
+    pub fn contains_set(&self) -> bool {
+        //TODO: stub
+        true
+    }
+
     pub fn cards_count(&self) -> usize {
         self.cards.iter().filter(|card| card.is_some()).count()
     }
@@ -36,7 +41,7 @@ impl PlayingField {
     // "compress" the playing field, removing any None spaces
     // this will take effect mostly at the end of the game, when there aren't any cards in the deck
     // it will also take effect when we had more than 12 cards on the field at some point because there were no sets
-    pub fn compress(&mut self) {
+    fn compress(&mut self) {
         self.cards.retain(|card| card.is_some());
     }
 
