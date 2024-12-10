@@ -17,16 +17,6 @@ impl Card {
     const SPRITE_WIDTH: f32 = 180.0;
     const SPRITE_HEIGHT: f32 = 108.0;
 
-    //TODO: temp (testing)
-    pub fn default() -> Self {
-        Card {
-            shape: Shape::Oval,
-            color: CardColor::Red,
-            count: Count::One,
-            fill: Fill::Opaque,
-        }
-    }
-
     fn new(shape: Shape, color: CardColor, count: Count, fill: Fill) -> Self {
         Card {
             shape,
