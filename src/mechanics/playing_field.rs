@@ -2,6 +2,8 @@ use bevy::prelude::*;
 
 use crate::card::Card;
 
+use super::set::is_set;
+
 #[derive(Component)]
 pub struct PlayingField {
     // Represents 3x4 - 3x7 field of cards, None means we want to refill this space
@@ -16,22 +18,43 @@ pub fn display(
     if let Ok(playing_field) = field_query.get_single() {
         let no_cards = playing_field.cards_count();
         match no_cards {
-            12 => {},
-            _ => {},
+            12 => {}
+            _ => {}
         }
     }
 }
 
 impl PlayingField {
     pub fn new() -> Self {
-        PlayingField {
-            cards: vec![],
-        }
+        PlayingField { cards: vec![] }
     }
 
     pub fn contains_set(&self) -> bool {
-        //TODO: stub
-        true
+        // it is okay to use brute-force O(n^3) algorithm here because:
+        // 1. It is close to optimal (can be redued to O(n^2) using hashmap at best)
+        // as the problem is NP-complete (http://pbg.cs.illinois.edu/papers/set.pdf)
+        // and there will never be more than 21 cards on the deck at the same time
+        // (https://www.sciencedirect.com/science/article/abs/pii/S030402080873322X)
+        // therefore we need to check at most 21 choose 3 = 1330 combinations
+        // and in most cases 12 choose 3 = 220 combinations
+
+        for i in 0..self.cards.len() {
+            if let Some(card1) = self.cards[i] {
+                for j in i + 1..self.cards.len() {
+                    if let Some(card2) = self.cards[j] {
+                        for k in j + 1..self.cards.len() {
+                            if let Some(card3) = self.cards[k] {
+                                if is_set(&card1, &card2, &card3) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        false
     }
 
     pub fn cards_count(&self) -> usize {

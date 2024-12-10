@@ -1,4 +1,3 @@
-
 // Manages a single game, including the deck, playing field, scores and timer
 
 use std::cmp::max;

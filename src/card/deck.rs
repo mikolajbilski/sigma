@@ -17,7 +17,9 @@ impl Deck {
 
         cards.shuffle(&mut thread_rng());
 
-        Deck { cards: VecDeque::from(cards) }
+        Deck {
+            cards: VecDeque::from(cards),
+        }
     }
 
     pub fn peek(&self) -> Card {
