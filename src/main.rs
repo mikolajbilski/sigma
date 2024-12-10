@@ -3,9 +3,20 @@ mod card;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
+const DEFAULT_WIDTH: f32 = 1280.0;
+const DEFAULT_HEIGHT: f32 = 720.0;
+
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                resolution: (DEFAULT_WIDTH, DEFAULT_HEIGHT).into(),
+                title: "SIGMA".to_string(),
+                resizable: false,
+                ..default()
+            }),
+            ..default()
+        }))
         .add_systems(Startup, spawn_camera)
         .add_systems(Startup, spawn_card)
         .run();
