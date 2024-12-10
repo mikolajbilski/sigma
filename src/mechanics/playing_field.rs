@@ -32,7 +32,11 @@ pub fn display(
                 if card_id < cards_count {
                     if let Some(card) = cards[card_id] {
                         println!("Row: {row_no}, column: {column_no}, card: {card_id}");
-                        println!("x: {}, y: {}, card: {card_id}", 600.0 + ROW_Y[row_no], 400.0 + COLUMN_X[column_no]);
+                        println!(
+                            "x: {}, y: {}, card: {card_id}",
+                            600.0 + ROW_Y[row_no],
+                            400.0 + COLUMN_X[column_no]
+                        );
                         // Display this card
                         commands
                             .spawn(TransformBundle {

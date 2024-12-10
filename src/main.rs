@@ -21,7 +21,10 @@ fn main() {
             ..default()
         }))
         .add_systems(Startup, spawn_camera)
-        .add_systems(Startup, (startup, start_game, playing_field::display).chain())
+        .add_systems(
+            Startup,
+            (startup, start_game, playing_field::display).chain(),
+        )
         .run();
 }
 
@@ -30,7 +33,7 @@ pub fn startup(mut commands: Commands) {
 }
 
 pub fn start_game(mut game_query: Query<&mut GameManager>) {
-    let game_manager  = game_query.get_single_mut().unwrap().into_inner();
+    let game_manager = game_query.get_single_mut().unwrap().into_inner();
     game_manager.start_game();
 }
 
