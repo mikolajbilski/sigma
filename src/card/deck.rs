@@ -15,10 +15,6 @@ impl Deck {
 
         cards.shuffle(&mut thread_rng());
 
-        for card in cards.iter() {
-            println!("{:?}", card);
-        }
-
         Deck { cards }
     }
 
