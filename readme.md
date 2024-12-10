@@ -9,7 +9,7 @@
 - Singleplayer mode
 - Play versus an AI opponent with customizable difficulty levels
 - Track your statistics to help you enhance your SIGMA skills
-- Customize card shapes and colors
+- Customize card colors
 - Save your progress accross multiple profiles
 
 ## Installation
@@ -24,10 +24,10 @@ TODO:
 - Display, UI
 - Implement an AI opponent
 - Track basic stats such as best time and number of games played
+- Handle dynamically displaying cards from a base shape
 
 ### Part 2
 
-- Handle dynamically displaying cards from a base shape
 - Enable saving progress/settings
 - Customizable AI difficulty
 - Customizable UI
