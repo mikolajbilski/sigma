@@ -68,7 +68,7 @@ impl Card {
                 for i in positions.iter() {
                     background.spawn(SpriteBundle {
                         texture: content_texture.clone(),
-                        transform: Transform::from_xyz(*i as f32, 0.0, 1.0), // Adjust positions dynamically
+                        transform: Transform::from_xyz(*i as f32, 0.0, 1.0),
                         sprite: Sprite {
                             color,
                             ..default()
