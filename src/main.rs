@@ -1,4 +1,5 @@
 mod card;
+mod mechanics;
 
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;

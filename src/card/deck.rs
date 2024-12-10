@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 use super::Card;
 
 use bevy::prelude::*;
@@ -6,7 +8,7 @@ use rand::thread_rng;
 
 #[derive(Component)]
 pub struct Deck {
-    cards: Vec<Card>,
+    cards: VecDeque<Card>,
 }
 
 impl Deck {
@@ -15,10 +17,30 @@ impl Deck {
 
         cards.shuffle(&mut thread_rng());
 
-        Deck { cards }
+        Deck { cards: VecDeque::from(cards) }
     }
 
     pub fn peek(&self) -> Card {
-        self.cards.first().unwrap().clone()
+        self.cards.front().unwrap().clone()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.cards.is_empty()
+    }
+
+    // Return no_cards from the top of the deck, removing them from the deck
+    // If there are less cards in the deck than requested, returns all the remaining cards
+    pub fn get_cards(&mut self, no_cards: i32) -> Vec<Card> {
+        let mut taken = vec![];
+
+        for _ in 0..no_cards {
+            if let Some(card) = self.cards.pop_front() {
+                taken.push(card);
+            } else {
+                break;
+            }
+        }
+
+        taken
     }
 }
