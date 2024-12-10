@@ -14,8 +14,8 @@ pub struct Card {
 }
 
 impl Card {
-    const SPRITE_WIDTH: f32 = 200.0;
-    const SPRITE_HEIGHT: f32 = 120.0;
+    const SPRITE_WIDTH: f32 = 180.0;
+    const SPRITE_HEIGHT: f32 = 108.0;
 
     //TODO: temp (testing)
     pub fn default() -> Self {
@@ -61,10 +61,12 @@ impl Card {
         let count = self.get_count();
         let color = self.get_texture_color();
 
+        let card = self.clone();
+
         move |parent: &mut ChildBuilder| {
             // Spawn the background
             parent
-                .spawn(SpriteBundle {
+                .spawn((SpriteBundle {
                     texture: background_texture.clone(),
                     transform: Transform::from_scale(vec3(
                         Card::SPRITE_WIDTH / 300.0,
@@ -72,7 +74,7 @@ impl Card {
                         1.0,
                     )),
                     ..Default::default()
-                })
+                }, card))
                 .with_children(|background| {
                     // Spawn each content sprite as a child
 

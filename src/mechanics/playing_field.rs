@@ -20,9 +20,9 @@ pub fn display(
         let cards_count = playing_field.cards_count();
         let rows = cards_count / 3;
 
-        const COLUMN_X: &[f32] = &[-250.0, 0.0, 250.0];
+        const COLUMN_X: &[f32] = &[-200.0, 0.0, 200.0];
         // rows are displayed top to bottom, apart from the *REALLY* rare last row
-        const ROW_Y: &[f32] = &[240.0, 80.0, -80.0, -240.0, -400.0, -560.0, 400.0];
+        const ROW_Y: &[f32] = &[180.0, 60.0, -60.0, -180.0, -300.0, -420.0, 300.0];
 
         let cards = playing_field.get_cards();
 
@@ -31,18 +31,12 @@ pub fn display(
                 let card_id = 3 * row_no + column_no;
                 if card_id < cards_count {
                     if let Some(card) = cards[card_id] {
-                        println!("Row: {row_no}, column: {column_no}, card: {card_id}");
-                        println!(
-                            "x: {}, y: {}, card: {card_id}",
-                            600.0 + ROW_Y[row_no],
-                            400.0 + COLUMN_X[column_no]
-                        );
                         // Display this card
                         commands
                             .spawn(TransformBundle {
                                 local: Transform::from_xyz(
-                                    600.0 + COLUMN_X[column_no],
-                                    400.0 + ROW_Y[row_no],
+                                    640.0 + COLUMN_X[column_no],
+                                    640.0 + ROW_Y[row_no],
                                     0.0,
                                 ),
                                 ..Default::default()
