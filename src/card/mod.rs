@@ -7,10 +7,10 @@ use bevy::{math::vec3, prelude::*};
 
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Card {
-    shape: Shape,
-    color: CardColor,
-    count: Count,
-    fill: Fill,
+    pub shape: Shape,
+    pub color: CardColor,
+    pub count: Count,
+    pub fill: Fill,
 }
 
 impl Card {
