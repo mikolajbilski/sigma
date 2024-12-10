@@ -3,7 +3,7 @@ pub use deck::Deck;
 pub mod properties;
 use properties::*;
 
-use bevy::prelude::*;
+use bevy::{math::vec3, prelude::*};
 
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Card {
@@ -14,6 +14,9 @@ pub struct Card {
 }
 
 impl Card {
+    const SPRITE_WIDTH: f32 = 200.0;
+    const SPRITE_HEIGHT: f32 = 120.0;
+
     //TODO: temp (testing)
     pub fn default() -> Self {
         Card {
@@ -63,6 +66,11 @@ impl Card {
             parent
                 .spawn(SpriteBundle {
                     texture: background_texture.clone(),
+                    transform: Transform::from_scale(vec3(
+                        Card::SPRITE_WIDTH / 300.0,
+                        Card::SPRITE_HEIGHT / 180.0,
+                        1.0,
+                    )),
                     ..Default::default()
                 })
                 .with_children(|background| {
