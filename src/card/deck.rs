@@ -22,10 +22,6 @@ impl Deck {
         }
     }
 
-    pub fn peek(&self) -> Card {
-        self.cards.front().unwrap().clone()
-    }
-
     pub fn is_empty(&self) -> bool {
         self.cards.is_empty()
     }
