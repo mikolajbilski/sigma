@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{card::Card, mechanics::playing_field};
+use crate::card::Card;
 
 use super::{game_manager::GameManager, set::is_set};
 
