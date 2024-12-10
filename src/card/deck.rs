@@ -19,9 +19,7 @@ impl Deck {
             println!("{:?}", card);
         }
 
-        Deck {
-            cards,
-        }
+        Deck { cards }
     }
 
     pub fn peek(&self) -> Card {
