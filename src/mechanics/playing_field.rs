@@ -33,14 +33,17 @@ pub fn display(
                     if let Some(card) = cards[card_id] {
                         // Display this card
                         commands
-                            .spawn(TransformBundle {
-                                local: Transform::from_xyz(
-                                    640.0 + COLUMN_X[column_no],
-                                    640.0 + ROW_Y[row_no],
-                                    0.0,
-                                ),
-                                ..Default::default()
-                            })
+                            .spawn((
+                                TransformBundle {
+                                    local: Transform::from_xyz(
+                                        640.0 + COLUMN_X[column_no],
+                                        450.0 + ROW_Y[row_no],
+                                        0.0,
+                                    ),
+                                    ..Default::default()
+                                },
+                                card.clone(),
+                            ))
                             .with_children(card.generate_card_entity(&asset_server));
                     }
                 }

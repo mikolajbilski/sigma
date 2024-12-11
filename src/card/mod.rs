@@ -51,23 +51,18 @@ impl Card {
         let count = self.get_count();
         let color = self.get_texture_color();
 
-        let card = self.clone();
-
         move |parent: &mut ChildBuilder| {
             // Spawn the background
             parent
-                .spawn((
-                    SpriteBundle {
-                        texture: background_texture.clone(),
-                        transform: Transform::from_scale(vec3(
-                            Card::SPRITE_WIDTH / 300.0,
-                            Card::SPRITE_HEIGHT / 180.0,
-                            1.0,
-                        )),
-                        ..Default::default()
-                    },
-                    card,
-                ))
+                .spawn((SpriteBundle {
+                    texture: background_texture.clone(),
+                    transform: Transform::from_scale(vec3(
+                        Card::SPRITE_WIDTH / 300.0,
+                        Card::SPRITE_HEIGHT / 180.0,
+                        1.0,
+                    )),
+                    ..Default::default()
+                },))
                 .with_children(|background| {
                     // Spawn each content sprite as a child
 

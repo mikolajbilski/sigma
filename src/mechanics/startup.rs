@@ -5,7 +5,7 @@ use crate::card::Card;
 use super::{game_manager::GameManager, input_manager, playing_field};
 
 const DEFAULT_WIDTH: f32 = 1280.0;
-const DEFAULT_HEIGHT: f32 = 1280.0;
+const DEFAULT_HEIGHT: f32 = 900.0;
 
 fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
     let window = window_query.get_single().unwrap();
