@@ -17,7 +17,11 @@ pub fn handle_mouse_clicks(
             for card in &card_query {
                 let card_x = card.1.translation[0];
                 let card_y = card.1.translation[1];
-                if click_x > card_x - 90.0 && click_x < card_x + 90.0 && click_y > card_y - 54.0 && click_y < card_y + 54.0 {
+                if click_x > card_x - 90.0
+                    && click_x < card_x + 90.0
+                    && click_y > card_y - 54.0
+                    && click_y < card_y + 54.0
+                {
                     println!("{:?}", card);
                 }
             }
