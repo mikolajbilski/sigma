@@ -2,7 +2,7 @@ use bevy::{prelude::*, window::PrimaryWindow};
 
 use crate::card::Card;
 
-use super::{game_manager::GameManager, input_manager, playing_field};
+use super::{game_manager::GameManager, input_manager, playing_field, selection_manager};
 
 const DEFAULT_WIDTH: f32 = 1280.0;
 const DEFAULT_HEIGHT: f32 = 900.0;
@@ -48,6 +48,7 @@ pub fn init() {
             (startup, start_game, playing_field::display, list_cards).chain(),
         )
         .add_systems(Update, input_manager::handle_mouse_clicks)
+        .add_systems(Update, selection_manager::check_selected)
         .run();
 }
 

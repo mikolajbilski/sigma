@@ -11,6 +11,8 @@ pub struct Card {
     pub color: CardColor,
     pub count: Count,
     pub fill: Fill,
+
+    pub selected: bool,
 }
 
 impl Card {
@@ -23,6 +25,7 @@ impl Card {
             color,
             count,
             fill,
+            selected: false,
         }
     }
 
@@ -40,6 +43,14 @@ impl Card {
             self.shape.as_name(),
             self.fill.as_name()
         )
+    }
+
+    pub fn flip_selection(&mut self) {
+        self.selected = !self.selected;
+    }
+
+    pub fn is_selected(&self) -> bool {
+        self.selected
     }
 
     pub fn generate_card_entity(
