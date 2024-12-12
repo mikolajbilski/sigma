@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::card::Card;
 
-use super::{game_manager::GameManager, set::is_set};
+use super::{found_set_event::FoundSetEvent, game_manager::GameManager, set::is_set};
 
 #[derive(Component)]
 pub struct PlayingField {
@@ -54,6 +54,33 @@ pub fn display(
     }
 }
 
+pub fn remove_found_set(
+    mut commands: Commands,
+    mut ev_found_set: EventReader<FoundSetEvent>,
+    mut cards: Query<(Entity, &Card)>,
+    mut game_manager_query: Query<&mut GameManager>,
+    sprites_query: Query<&Sprite>,
+) {
+    for _ in ev_found_set.read() {
+        println!("CLEANUP");
+        if let Ok(mut game_manager) = game_manager_query.get_single_mut() {
+            game_manager.cleanup_playing_field();
+
+            println!("Sprites: {}", sprites_query.iter().count());
+
+            for card in &mut cards {
+                if card.1.should_remove() {
+                    commands.entity(card.0).despawn_recursive();
+                }
+            }
+
+            println!("Sprites: {}", sprites_query.iter().count());
+
+            game_manager.fill_playing_field();
+        }
+    }
+}
+
 impl PlayingField {
     pub fn new() -> Self {
         PlayingField { cards: vec![] }
@@ -85,6 +112,16 @@ impl PlayingField {
         }
 
         false
+    }
+
+    pub fn remove_marked(&mut self) {
+        for card in self.cards.iter_mut() {
+            if let Some(internal) = card {
+                if internal.should_remove() {
+                    *card = None;
+                }
+            }
+        }
     }
 
     pub fn cards_count(&self) -> usize {

@@ -1,3 +1,4 @@
+pub mod found_set_event;
 pub mod game_manager;
 pub mod input_manager;
 pub mod playing_field;

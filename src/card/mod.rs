@@ -12,7 +12,8 @@ pub struct Card {
     pub count: Count,
     pub fill: Fill,
 
-    pub selected: bool,
+    selected: bool,
+    to_remove: bool,
 }
 
 impl Card {
@@ -26,6 +27,7 @@ impl Card {
             count,
             fill,
             selected: false,
+            to_remove: false,
         }
     }
 
@@ -35,6 +37,14 @@ impl Card {
 
     pub fn get_count(&self) -> i32 {
         self.count.as_number()
+    }
+
+    pub fn mark_for_removal(&mut self) {
+        self.to_remove = true;
+    }
+
+    pub fn should_remove(&self) -> bool {
+        self.to_remove
     }
 
     pub fn get_asset_path(&self) -> String {

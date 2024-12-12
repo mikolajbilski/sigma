@@ -2,7 +2,13 @@ use bevy::{prelude::*, window::PrimaryWindow};
 
 use crate::card::Card;
 
-use super::{game_manager::GameManager, input_manager, playing_field, selection_manager};
+use super::{
+    found_set_event,
+    game_manager::GameManager,
+    input_manager,
+    playing_field::{self, remove_found_set},
+    selection_manager,
+};
 
 const DEFAULT_WIDTH: f32 = 1280.0;
 const DEFAULT_HEIGHT: f32 = 900.0;
@@ -49,6 +55,8 @@ pub fn init() {
         )
         .add_systems(Update, input_manager::handle_mouse_clicks)
         .add_systems(Update, selection_manager::check_selected)
+        .add_systems(Update, remove_found_set)
+        .add_event::<found_set_event::FoundSetEvent>()
         .run();
 }
 

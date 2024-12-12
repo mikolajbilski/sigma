@@ -1,12 +1,13 @@
-use std::borrow::BorrowMut;
-
 use bevy::prelude::*;
 
-use crate::card::{self, Card};
+use crate::card::Card;
 
-use super::set::is_set;
+use super::{found_set_event::FoundSetEvent, set::is_set};
 
-pub fn check_selected(mut card_query: Query<&mut Card>) {
+pub fn check_selected(
+    mut card_query: Query<&mut Card>,
+    mut ev_foundset: EventWriter<FoundSetEvent>,
+) {
     let mut selected_count: usize = 0;
 
     for card in &card_query {
@@ -15,11 +16,29 @@ pub fn check_selected(mut card_query: Query<&mut Card>) {
         }
     }
 
+    let mut to_check = vec![];
+
     if selected_count == 3 {
-        println!("CHECKING FOR A SET...");
-        for mut card in &mut card_query {
+        for card in &mut card_query {
             if card.is_selected() {
-                card.flip_selection();
+                to_check.push(card.clone());
+            }
+        }
+        if is_set(&to_check[0], &to_check[1], &to_check[2]) {
+            println!("FOUND A SET!");
+            for mut card in &mut card_query {
+                if card.is_selected() {
+                    card.mark_for_removal();
+                }
+            }
+            println!("SENDING AN EVENT");
+            ev_foundset.send(FoundSetEvent {});
+        } else {
+            println!("NOT A SET!");
+            for mut card in &mut card_query {
+                if card.is_selected() {
+                    card.flip_selection();
+                }
             }
         }
     }
