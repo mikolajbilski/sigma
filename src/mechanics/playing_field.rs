@@ -12,11 +12,11 @@ pub struct PlayingField {
 
 pub fn display(
     mut commands: Commands,
-    field_query: Query<&GameManager>,
+    mut field_query: Query<&mut GameManager>,
     asset_server: Res<AssetServer>,
 ) {
-    if let Ok(game_manager) = field_query.get_single() {
-        let playing_field = game_manager.get_playing_field();
+    if let Ok(mut game_manager) = field_query.get_single_mut() {
+        let playing_field = game_manager.get_playing_field_mut();
         let cards_count = playing_field.cards_count();
         let rows = cards_count / 3;
 
@@ -24,27 +24,31 @@ pub fn display(
         // rows are displayed top to bottom, apart from the *REALLY* rare last row
         const ROW_Y: &[f32] = &[180.0, 60.0, -60.0, -180.0, -300.0, -420.0, 300.0];
 
-        let cards = playing_field.get_cards();
+        let mut cards = playing_field.get_cards_mut();
 
         for row_no in 0..rows {
             for column_no in 0..3 {
                 let card_id = 3 * row_no + column_no;
                 if card_id < cards_count {
-                    if let Some(card) = cards[card_id] {
-                        // Display this card
-                        commands
-                            .spawn((
-                                TransformBundle {
-                                    local: Transform::from_xyz(
-                                        640.0 + COLUMN_X[column_no],
-                                        450.0 + ROW_Y[row_no],
-                                        0.0,
-                                    ),
-                                    ..Default::default()
-                                },
-                                card.clone(),
-                            ))
-                            .with_children(card.generate_card_entity(&asset_server));
+                    if let Some(card) = cards[card_id].as_mut() {
+                        if !card.is_displayed() {
+                            card.set_displayed(true);
+                            // Display this card
+                            println!("Displaying new card!");
+                            commands
+                                .spawn((
+                                    TransformBundle {
+                                        local: Transform::from_xyz(
+                                            640.0 + COLUMN_X[column_no],
+                                            450.0 + ROW_Y[row_no],
+                                            0.0,
+                                        ),
+                                        ..Default::default()
+                                    },
+                                    card.clone(),
+                                ))
+                                .with_children(card.generate_card_entity(&asset_server));
+                        }
                     }
                 }
             }
@@ -61,10 +65,12 @@ pub fn remove_found_set(
     mut game_manager_query: Query<&mut GameManager>,
     sprites_query: Query<&Sprite>,
 ) {
-    for _ in ev_found_set.read() {
+    for event in ev_found_set.read() {
         println!("CLEANUP");
         if let Ok(mut game_manager) = game_manager_query.get_single_mut() {
-            game_manager.cleanup_playing_field();
+            let set_cards = event.get_cards();
+
+            game_manager.remove_cards(set_cards);
 
             println!("Sprites: {}", sprites_query.iter().count());
 
@@ -114,11 +120,25 @@ impl PlayingField {
         false
     }
 
-    pub fn remove_marked(&mut self) {
+    pub fn remove_cards(&mut self, to_remove: Vec<Card>) {
+        println!("REMOVING MARKED!");
         for card in self.cards.iter_mut() {
+            println!("{:?}", card);
             if let Some(internal) = card {
-                if internal.should_remove() {
+                if to_remove.contains(internal) {
+                    println!("REMOVING A CARD!");
                     *card = None;
+                }
+            }
+        }
+    }
+
+    pub fn mark_card(&mut self, to_mark: &Card) {
+        for card in self.cards.iter_mut() {
+            if let Some(card) = card {
+                if card == to_mark {
+                    card.mark_for_removal();
+                    return;
                 }
             }
         }
@@ -129,7 +149,11 @@ impl PlayingField {
     }
 
     pub(crate) fn get_cards(&self) -> Vec<&Option<Card>> {
-        self.cards.iter().filter(|card| card.is_some()).collect()
+        self.cards.iter().collect()
+    }
+
+    pub(crate) fn get_cards_mut(&mut self) -> Vec<&mut Option<Card>> {
+        self.cards.iter_mut().collect()
     }
 
     // "compress" the playing field, removing any None spaces
@@ -142,10 +166,11 @@ impl PlayingField {
     pub fn add_cards(&mut self, mut added: Vec<Card>) {
         // Add cards, beginning with filling the empty spaces and then appending to the end of the vector
         for card in self.cards.iter_mut() {
-            if card.is_none() {
+            if card.is_some() {
                 continue;
             }
             if let Some(new_card) = added.pop() {
+                println!("FILLING EMPTY SPACE WITH CARD");
                 *card = Some(new_card);
             }
         }

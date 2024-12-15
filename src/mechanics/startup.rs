@@ -49,10 +49,8 @@ pub fn init() {
     App::new()
         .add_plugins(DefaultPlugins.set(generate_window()))
         .add_systems(Startup, spawn_camera)
-        .add_systems(
-            Startup,
-            (startup, start_game, playing_field::display, list_cards).chain(),
-        )
+        .add_systems(Startup, (startup, start_game, list_cards).chain())
+        .add_systems(Update, playing_field::display)
         .add_systems(Update, input_manager::handle_mouse_clicks)
         .add_systems(Update, selection_manager::check_selected)
         .add_systems(Update, remove_found_set)

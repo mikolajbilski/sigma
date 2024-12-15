@@ -32,7 +32,7 @@ pub fn check_selected(
                 }
             }
             println!("SENDING AN EVENT");
-            ev_foundset.send(FoundSetEvent {});
+            ev_foundset.send(FoundSetEvent::new(to_check));
         } else {
             println!("NOT A SET!");
             for mut card in &mut card_query {

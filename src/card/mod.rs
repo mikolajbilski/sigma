@@ -12,6 +12,7 @@ pub struct Card {
     pub count: Count,
     pub fill: Fill,
 
+    displayed: bool,
     selected: bool,
     to_remove: bool,
 }
@@ -26,6 +27,8 @@ impl Card {
             color,
             count,
             fill,
+
+            displayed: false,
             selected: false,
             to_remove: false,
         }
@@ -61,6 +64,14 @@ impl Card {
 
     pub fn is_selected(&self) -> bool {
         self.selected
+    }
+
+    pub fn set_displayed(&mut self, val: bool) {
+        self.displayed = val;
+    }
+
+    pub fn is_displayed(&self) -> bool {
+        self.displayed
     }
 
     pub fn generate_card_entity(
@@ -124,5 +135,14 @@ impl Card {
         }
 
         all
+    }
+}
+
+impl PartialEq for Card {
+    fn eq(&self, other: &Self) -> bool {
+        self.shape == other.shape
+            && self.color == other.color
+            && self.count == other.count
+            && self.fill == other.fill
     }
 }

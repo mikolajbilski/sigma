@@ -4,7 +4,7 @@ use std::cmp::max;
 
 use bevy::prelude::Component;
 
-use crate::card::Deck;
+use crate::card::{Card, Deck};
 
 use super::playing_field::PlayingField;
 
@@ -25,6 +25,7 @@ impl GameManager {
     // Fill the playing field until there are at least 12 cards and there is at least one set
     pub fn fill_playing_field(&mut self) {
         let cards_to_add = max(12 - self.playing_field.cards_count(), 0);
+        println!("FILLING THE FIELD WITH {} CARDS!", cards_to_add);
         let added_cards = self.deck.take_cards(cards_to_add);
         self.playing_field.add_cards(added_cards);
         while !(self.deck.is_empty() || self.playing_field.contains_set()) {
@@ -33,8 +34,8 @@ impl GameManager {
         }
     }
 
-    pub fn cleanup_playing_field(&mut self) {
-        self.playing_field.remove_marked();
+    pub fn remove_cards(&mut self, cards: Vec<Card>) {
+        self.playing_field.remove_cards(cards);
     }
 
     pub fn start_game(&mut self) {
@@ -45,5 +46,9 @@ impl GameManager {
 
     pub fn get_playing_field(&self) -> &PlayingField {
         &self.playing_field
+    }
+
+    pub fn get_playing_field_mut(&mut self) -> &mut PlayingField {
+        &mut self.playing_field
     }
 }
