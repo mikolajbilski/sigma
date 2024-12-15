@@ -9,9 +9,7 @@ pub struct FoundSetEvent {
 
 impl FoundSetEvent {
     pub fn new(cards: Vec<Card>) -> Self {
-        FoundSetEvent {
-            cards,
-        }
+        FoundSetEvent { cards }
     }
 
     pub fn get_cards(&self) -> Vec<Card> {
