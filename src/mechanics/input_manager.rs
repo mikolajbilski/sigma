@@ -13,7 +13,6 @@ pub fn handle_mouse_clicks(
             let click_x = pos[0];
             // transformation is required because world has y-axis increasing upwards, and window the opposite
             let click_y = 900.0 - pos[1];
-            println!("click at {:?}", win.cursor_position());
             for mut card in &mut card_query {
                 let card_x = card.1.translation[0];
                 let card_y = card.1.translation[1];
@@ -24,7 +23,6 @@ pub fn handle_mouse_clicks(
                 {
                     // TODO: highlight the card
                     card.0.flip_selection();
-                    println!("{:?}", card);
                 }
             }
         }

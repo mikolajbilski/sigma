@@ -25,16 +25,13 @@ pub fn check_selected(
             }
         }
         if is_set(&to_check[0], &to_check[1], &to_check[2]) {
-            println!("FOUND A SET!");
             for mut card in &mut card_query {
                 if card.is_selected() {
                     card.mark_for_removal();
                 }
             }
-            println!("SENDING AN EVENT");
             ev_foundset.send(FoundSetEvent::new(to_check));
         } else {
-            println!("NOT A SET!");
             for mut card in &mut card_query {
                 if card.is_selected() {
                     card.flip_selection();

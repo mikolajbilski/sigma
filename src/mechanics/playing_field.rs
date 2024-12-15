@@ -123,7 +123,6 @@ impl PlayingField {
     pub fn remove_cards(&mut self, to_remove: Vec<Card>) {
         println!("REMOVING MARKED!");
         for card in self.cards.iter_mut() {
-            println!("{:?}", card);
             if let Some(internal) = card {
                 if to_remove.contains(internal) {
                     println!("REMOVING A CARD!");
