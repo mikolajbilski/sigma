@@ -45,6 +45,7 @@ pub fn display(
                                         ),
                                         ..Default::default()
                                     },
+                                    InheritedVisibility::default(),
                                     card.clone(),
                                 ))
                                 .with_children(card.generate_card_entity(&asset_server));
