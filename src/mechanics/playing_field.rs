@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy::{math::vec3, prelude::*};
 
 use crate::card::Card;
 
@@ -9,6 +9,9 @@ pub struct PlayingField {
     // Represents 3x4 - 3x7 field of cards, None means we want to refill this space
     cards: Vec<Option<Card>>,
 }
+
+#[derive(Event)]
+pub struct MoveCompressedEvent {}
 
 pub fn display(
     mut commands: Commands,
@@ -34,7 +37,7 @@ pub fn display(
                         if !card.is_displayed() {
                             card.set_displayed(true);
                             // Display this card
-                            println!("Displaying new card!");
+                            //println!("Displaying new card!");
                             commands
                                 .spawn((
                                     TransformBundle {
@@ -59,12 +62,48 @@ pub fn display(
     }
 }
 
+pub fn card_id_to_pos(id: usize) -> (f32, f32, f32) {
+    const COLUMN_X: &[f32] = &[-200.0, 0.0, 200.0];
+    // rows are displayed top to bottom, apart from the *REALLY* rare last row
+    const ROW_Y: &[f32] = &[180.0, 60.0, -60.0, -180.0, -300.0, -420.0, 300.0];
+
+    if id > 20 {
+        panic!("Unexpected ID!");
+    }
+
+    (640.0 + COLUMN_X[id % 3], 450.0 + ROW_Y[id / 3], 0.0)
+}
+
+pub fn move_compressed(
+    mut field_query: Query<&mut GameManager>,
+    mut cards_query: Query<(&mut Card, &mut Transform)>,
+    mut move_compressed_event: EventReader<MoveCompressedEvent>,
+) {
+    for _event in move_compressed_event.read() {
+        if let Ok(mut game_manager) = field_query.get_single_mut() {
+            let playing_field = game_manager.get_playing_field_mut();
+            for (id, card) in playing_field.get_cards().iter().enumerate() {
+                if let Some(card) = card {
+                    for mut card_entity in cards_query.iter_mut() {
+                        if *card == *card_entity.0 {
+                            //println!("(MAYBE) MOVING A CARD");
+                            let (x, y, z) = card_id_to_pos(id);
+                            card_entity.1.translation = vec3(x, y, z);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 pub fn remove_found_set(
     mut commands: Commands,
     mut ev_found_set: EventReader<FoundSetEvent>,
     mut cards: Query<(Entity, &Card)>,
     mut game_manager_query: Query<&mut GameManager>,
     sprites_query: Query<&Sprite>,
+    mut ev_move: EventWriter<MoveCompressedEvent>,
 ) {
     for event in ev_found_set.read() {
         println!("CLEANUP");
@@ -84,6 +123,8 @@ pub fn remove_found_set(
             println!("Sprites: {}", sprites_query.iter().count());
 
             game_manager.fill_playing_field();
+
+            ev_move.send(MoveCompressedEvent {});
         }
     }
 }
@@ -160,6 +201,7 @@ impl PlayingField {
     // this will take effect mostly at the end of the game, when there aren't any cards in the deck
     // it will also take effect when we had more than 12 cards on the field at some point because there were no sets
     fn compress(&mut self) {
+        // TODO: update the transforms of the cards
         self.cards.retain(|card| card.is_some());
     }
 

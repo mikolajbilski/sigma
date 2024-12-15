@@ -54,7 +54,9 @@ pub fn init() {
         .add_systems(Update, input_manager::handle_mouse_clicks)
         .add_systems(Update, selection_manager::check_selected)
         .add_systems(Update, remove_found_set)
+        .add_systems(Update, playing_field::move_compressed)
         .add_event::<found_set_event::FoundSetEvent>()
+        .add_event::<playing_field::MoveCompressedEvent>()
         .run();
 }
 
