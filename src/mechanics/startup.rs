@@ -7,7 +7,7 @@ use super::{
     game_manager::GameManager,
     input_manager,
     playing_field::{self, remove_found_set},
-    selection_manager,
+    selection_manager, timer,
 };
 
 const DEFAULT_WIDTH: f32 = 1280.0;
@@ -50,11 +50,13 @@ pub fn init() {
         .add_plugins(DefaultPlugins.set(generate_window()))
         .add_systems(Startup, spawn_camera)
         .add_systems(Startup, (startup, start_game, list_cards).chain())
+        .add_systems(Startup, timer::setup)
         .add_systems(Update, playing_field::display)
         .add_systems(Update, input_manager::handle_mouse_clicks)
         .add_systems(Update, selection_manager::check_selected)
         .add_systems(Update, remove_found_set)
         .add_systems(Update, playing_field::move_compressed)
+        .add_systems(Update, timer::update_timer)
         .add_event::<found_set_event::FoundSetEvent>()
         .add_event::<playing_field::MoveCompressedEvent>()
         .run();

@@ -41,3 +41,9 @@ Mikołaj Bilski (gh: [@mikolajbilski](https://github.com/mikolajbilski))
 ## Libraries
 
 [Bevy Game Engine](https://github.com/bevyengine/bevy)
+
+## Licences & Credits
+
+- This app is distributed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html)
+
+- Credits for the font: [Roboto](https://fonts.google.com/specimen/Roboto)
