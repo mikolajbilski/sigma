@@ -25,7 +25,9 @@ pub fn display(
             if let Some(card) = card.as_mut() {
                 if !card.is_displayed() {
                     card.set_displayed(true);
+
                     let (x, y, z) = card_id_to_pos(id);
+
                     commands
                         .spawn((
                             TransformBundle {
@@ -40,7 +42,7 @@ pub fn display(
             }
         }
     } else {
-        println!("No game manager found!");
+        panic!("No game manager found!");
     }
 }
 
