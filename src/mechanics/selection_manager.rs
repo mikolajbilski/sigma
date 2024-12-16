@@ -31,7 +31,7 @@ pub fn check_selected(
                     card.mark_for_removal();
                 }
             }
-            
+
             ev_foundset.send(FoundSetEvent::new(to_check));
         } else {
             for mut card in &mut card_query {
