@@ -16,20 +16,22 @@ pub fn check_selected(
         }
     }
 
-    let mut to_check = vec![];
-
     if selected_count == 3 {
+        let mut to_check = vec![];
+
         for card in &mut card_query {
             if card.is_selected() {
                 to_check.push(*card);
             }
         }
+
         if is_set(&to_check[0], &to_check[1], &to_check[2]) {
             for mut card in &mut card_query {
                 if card.is_selected() {
                     card.mark_for_removal();
                 }
             }
+            
             ev_foundset.send(FoundSetEvent::new(to_check));
         } else {
             for mut card in &mut card_query {
