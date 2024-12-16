@@ -3,9 +3,7 @@ use bevy::prelude::*;
 #[derive(Component)]
 pub struct TimerText;
 
-// Setup the UI
 pub fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    // Spawn the timer text
     commands
         .spawn(Text2dBundle {
             text: Text::from_section(
