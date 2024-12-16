@@ -19,8 +19,6 @@ pub fn is_set(card1: &Card, card2: &Card, card3: &Card) -> bool {
         return false;
     }
 
-    println!("SET:\n{:?},\n{:?},\n{:?}", card1, card2, card3);
-
     true
 }
 
