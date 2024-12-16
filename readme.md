@@ -22,17 +22,15 @@ TODO:
 
 - Basic game loop for signleplayer mode
 - Display, UI
-- Implement an AI opponent
-- Track basic stats such as best time and number of games played
 - Handle dynamically displaying cards from a base shape
 
 ### Part 2
 
+- Menu and game over screen
 - Enable saving progress/settings
+- Implement an AI opponent
+- Track basic stats such as best time and number of games played
 - Customizable AI difficulty
-- Customizable UI
-- More stat tracking, including graphs such as time between sets etc
-- Possibly a tutorial
 
 ## Authors
 
