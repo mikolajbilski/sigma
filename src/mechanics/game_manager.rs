@@ -25,12 +25,17 @@ impl GameManager {
     // Fill the playing field until there are at least 12 cards and there is at least one set
     pub fn fill_playing_field(&mut self) {
         let cards_to_add = max(12 - self.playing_field.cards_count(), 0);
-        println!("FILLING THE FIELD WITH {} CARDS!", cards_to_add);
         let added_cards = self.deck.take_cards(cards_to_add);
         self.playing_field.add_cards(added_cards);
+
         while !(self.deck.is_empty() || self.playing_field.contains_set()) {
             // Always add cards in increment of 3
             self.playing_field.add_cards(self.deck.take_cards(3));
+        }
+
+        if self.deck.is_empty() && !self.playing_field.contains_set() {
+            // TODO: end the game by sending an event
+            println!("GAME ENDED!");
         }
     }
 
