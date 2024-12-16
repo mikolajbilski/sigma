@@ -63,6 +63,6 @@ pub(crate) fn init() {
             ),
         )
         .add_event::<found_set_event::FoundSetEvent>()
-        .add_event::<playing_field::MoveCompressedEvent>()
+        .add_event::<playing_field::MoveCardsEvent>()
         .run();
 }

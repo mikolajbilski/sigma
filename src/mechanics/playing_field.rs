@@ -11,7 +11,7 @@ pub struct PlayingField {
 }
 
 #[derive(Event)]
-pub struct MoveCompressedEvent {}
+pub struct MoveCardsEvent {}
 
 pub fn display(
     mut commands: Commands,
@@ -62,7 +62,7 @@ pub fn card_id_to_pos(id: usize) -> (f32, f32, f32) {
 pub fn move_to_compress(
     mut field_query: Query<&mut GameManager>,
     mut cards_query: Query<(&mut Card, &mut Transform)>,
-    mut move_compressed_event: EventReader<MoveCompressedEvent>,
+    mut move_compressed_event: EventReader<MoveCardsEvent>,
 ) {
     for _ in move_compressed_event.read() {
         if let Ok(mut game_manager) = field_query.get_single_mut() {
@@ -88,29 +88,23 @@ pub fn remove_found_set(
     mut ev_found_set: EventReader<FoundSetEvent>,
     mut cards: Query<(Entity, &Card)>,
     mut game_manager_query: Query<&mut GameManager>,
-    sprites_query: Query<&Sprite>,
-    mut ev_move: EventWriter<MoveCompressedEvent>,
+    mut ev_move: EventWriter<MoveCardsEvent>,
 ) {
     for event in ev_found_set.read() {
-        println!("CLEANUP");
         if let Ok(mut game_manager) = game_manager_query.get_single_mut() {
             let set_cards = event.get_cards();
 
             game_manager.get_playing_field_mut().remove_cards(set_cards);
 
-            println!("Sprites: {}", sprites_query.iter().count());
-
-            for card in &mut cards {
-                if card.1.should_remove() {
-                    commands.entity(card.0).despawn_recursive();
+            for (entity, card) in &mut cards {
+                if card.should_remove() {
+                    commands.entity(entity).despawn_recursive();
                 }
             }
 
-            println!("Sprites: {}", sprites_query.iter().count());
-
             game_manager.fill_playing_field();
 
-            ev_move.send(MoveCompressedEvent {});
+            ev_move.send(MoveCardsEvent {});
         }
     }
 }
