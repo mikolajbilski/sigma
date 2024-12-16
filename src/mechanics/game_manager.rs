@@ -4,7 +4,7 @@ use std::cmp::max;
 
 use bevy::prelude::Component;
 
-use crate::card::{Card, Deck};
+use crate::card::Deck;
 
 use super::playing_field::PlayingField;
 
