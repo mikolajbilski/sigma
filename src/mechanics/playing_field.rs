@@ -126,15 +126,13 @@ impl PlayingField {
         // and in most cases 12 choose 3 = 220 combinations
 
         for i in 0..self.cards.len() {
-            if let Some(card1) = self.cards[i] {
-                for j in i + 1..self.cards.len() {
-                    if let Some(card2) = self.cards[j] {
-                        for k in j + 1..self.cards.len() {
-                            if let Some(card3) = self.cards[k] {
-                                if is_set(&card1, &card2, &card3) {
-                                    return true;
-                                }
-                            }
+            for j in i + 1..self.cards.len() {
+                for k in j + 1..self.cards.len() {
+                    if let (Some(card1), Some(card2), Some(card3)) =
+                        (self.cards[i], self.cards[j], self.cards[k])
+                    {
+                        if is_set(&card1, &card2, &card3) {
+                            return true;
                         }
                     }
                 }
