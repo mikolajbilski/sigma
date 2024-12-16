@@ -58,25 +58,27 @@ pub fn card_id_to_pos(id: usize) -> (f32, f32, f32) {
     (640.0 + COLUMN_X[id % 3], 450.0 + ROW_Y[id / 3], 0.0)
 }
 
-pub fn move_compressed(
+// Move the sprites of the cards to "fill" empty spaces
+pub fn move_to_compress(
     mut field_query: Query<&mut GameManager>,
     mut cards_query: Query<(&mut Card, &mut Transform)>,
     mut move_compressed_event: EventReader<MoveCompressedEvent>,
 ) {
-    for _event in move_compressed_event.read() {
+    for _ in move_compressed_event.read() {
         if let Ok(mut game_manager) = field_query.get_single_mut() {
             let playing_field = game_manager.get_playing_field_mut();
             for (id, card) in playing_field.get_cards().iter().enumerate() {
                 if let Some(card) = card {
-                    for mut card_entity in cards_query.iter_mut() {
-                        if *card == *card_entity.0 {
-                            //println!("(MAYBE) MOVING A CARD");
+                    for (displayed_card, mut transform) in cards_query.iter_mut() {
+                        if *card == *displayed_card {
                             let (x, y, z) = card_id_to_pos(id);
-                            card_entity.1.translation = vec3(x, y, z);
+                            transform.translation = vec3(x, y, z);
                         }
                     }
                 }
             }
+        } else {
+            panic!("No game manager found while trying to move cards around!");
         }
     }
 }

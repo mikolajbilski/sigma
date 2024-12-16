@@ -58,7 +58,7 @@ pub(crate) fn init() {
                 input_manager::handle_mouse_clicks,
                 selection_manager::check_selected,
                 remove_found_set,
-                playing_field::move_compressed,
+                playing_field::move_to_compress,
                 timer::update_timer,
             ),
         )
