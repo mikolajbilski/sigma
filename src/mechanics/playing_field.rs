@@ -105,6 +105,8 @@ pub fn remove_found_set(
             game_manager.fill_playing_field();
 
             ev_move.send(MoveCardsEvent {});
+        } else {
+            panic!("No game manager found when removing cards after a set was found!");
         }
     }
 }
@@ -142,11 +144,9 @@ impl PlayingField {
     }
 
     pub fn remove_cards(&mut self, to_remove: Vec<Card>) {
-        println!("REMOVING MARKED!");
         for card in self.cards.iter_mut() {
             if let Some(internal) = card {
                 if to_remove.contains(internal) {
-                    println!("REMOVING A CARD!");
                     *card = None;
                 }
             }
