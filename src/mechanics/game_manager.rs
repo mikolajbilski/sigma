@@ -9,13 +9,13 @@ use crate::card::Deck;
 use super::playing_field::PlayingField;
 
 #[derive(Component)]
-pub struct GameManager {
+pub(crate) struct GameManager {
     playing_field: PlayingField,
     deck: Deck,
 }
 
 impl GameManager {
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         GameManager {
             playing_field: PlayingField::new(),
             deck: Deck::new(),
@@ -23,7 +23,7 @@ impl GameManager {
     }
 
     // Fill the playing field until there are at least 12 cards and there is at least one set
-    pub fn fill_playing_field(&mut self) {
+    pub(crate) fn fill_playing_field(&mut self) {
         let cards_to_add = max(12 - self.playing_field.cards_count(), 0);
         let added_cards = self.deck.take_cards(cards_to_add);
         self.playing_field.add_cards(added_cards);
@@ -39,12 +39,12 @@ impl GameManager {
         }
     }
 
-    pub fn start_game(&mut self) {
+    pub(crate) fn start_game(&mut self) {
         println!("GAME BEGINS");
         self.fill_playing_field();
     }
 
-    pub fn get_playing_field_mut(&mut self) -> &mut PlayingField {
+    pub(crate) fn get_playing_field_mut(&mut self) -> &mut PlayingField {
         &mut self.playing_field
     }
 }

@@ -4,7 +4,7 @@ use crate::card::Card;
 
 use super::{found_set_event::FoundSetEvent, set::is_set};
 
-pub fn check_selected(
+pub(crate) fn check_selected(
     mut card_query: Query<&mut Card>,
     mut ev_foundset: EventWriter<FoundSetEvent>,
 ) {

@@ -1,7 +1,7 @@
 use crate::card::Card;
 
 // Check if the given 3 cards form a set
-pub fn is_set(card1: &Card, card2: &Card, card3: &Card) -> bool {
+pub(crate) fn is_set(card1: &Card, card2: &Card, card3: &Card) -> bool {
     // Check all 4 properties
     if !all_same_or_all_different(&card1.shape, &card2.shape, &card3.shape) {
         return false;

@@ -1,9 +1,9 @@
 use bevy::prelude::*;
 
 #[derive(Component)]
-pub struct TimerText;
+pub(crate) struct TimerText;
 
-pub fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn(Text2dBundle {
             text: Text::from_section(
@@ -20,7 +20,7 @@ pub fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         .insert(TimerText);
 }
 
-pub fn update_timer(mut query: Query<&mut Text, With<TimerText>>, time: Res<Time>) {
+pub(crate) fn update_timer(mut query: Query<&mut Text, With<TimerText>>, time: Res<Time>) {
     let elapsed_time = time.elapsed();
 
     let hours = elapsed_time.as_secs() / 3600;

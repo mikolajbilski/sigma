@@ -2,7 +2,7 @@ use bevy::{prelude::*, window::PrimaryWindow};
 
 use crate::card::Card;
 
-pub fn handle_mouse_clicks(
+pub(crate) fn handle_mouse_clicks(
     mouse_input: Res<ButtonInput<MouseButton>>,
     window_query: Query<&Window, With<PrimaryWindow>>,
     mut card_query: Query<(&mut Card, &Transform)>,
