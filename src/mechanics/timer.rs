@@ -7,7 +7,7 @@ pub fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn(Text2dBundle {
             text: Text::from_section(
-                "0.0s",
+                "00.00.00.00s",
                 TextStyle {
                     font: asset_server.load("fonts/Roboto-Regular.ttf"),
                     font_size: 50.0,
