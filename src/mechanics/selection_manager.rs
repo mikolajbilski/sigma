@@ -21,7 +21,7 @@ pub fn check_selected(
     if selected_count == 3 {
         for card in &mut card_query {
             if card.is_selected() {
-                to_check.push(card.clone());
+                to_check.push(*card);
             }
         }
         if is_set(&to_check[0], &to_check[1], &to_check[2]) {
