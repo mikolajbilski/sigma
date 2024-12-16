@@ -1,4 +1,8 @@
 use bevy::{math::vec3, prelude::*};
+use color::CardColor;
+use count::Count;
+use fill::Fill;
+use shape::Shape;
 
 use super::properties::*;
 
