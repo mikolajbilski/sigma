@@ -5,15 +5,15 @@ use crate::card::Card;
 use super::{found_set_event::FoundSetEvent, game_manager::GameManager, set::is_set};
 
 #[derive(Component)]
-pub struct PlayingField {
+pub(crate) struct PlayingField {
     // Represents 3x4 - 3x7 field of cards, None means we want to refill this space
     cards: Vec<Option<Card>>,
 }
 
 #[derive(Event)]
-pub struct MoveCardsEvent {}
+pub(crate) struct MoveCardsEvent {}
 
-pub fn display(
+pub(crate) fn display(
     mut commands: Commands,
     mut field_query: Query<&mut GameManager>,
     asset_server: Res<AssetServer>,
@@ -46,7 +46,7 @@ pub fn display(
     }
 }
 
-pub fn card_id_to_pos(id: usize) -> (f32, f32, f32) {
+fn card_id_to_pos(id: usize) -> (f32, f32, f32) {
     const COLUMN_X: &[f32] = &[-200.0, 0.0, 200.0];
     // rows are displayed top to bottom, apart from the *REALLY* rare last row
     const ROW_Y: &[f32] = &[180.0, 60.0, -60.0, -180.0, -300.0, -420.0, 300.0];
@@ -59,7 +59,7 @@ pub fn card_id_to_pos(id: usize) -> (f32, f32, f32) {
 }
 
 // Move the sprites of the cards to "fill" empty spaces
-pub fn move_to_compress(
+pub(crate) fn move_to_compress(
     mut field_query: Query<&mut GameManager>,
     mut cards_query: Query<(&mut Card, &mut Transform)>,
     mut move_compressed_event: EventReader<MoveCardsEvent>,
@@ -83,7 +83,7 @@ pub fn move_to_compress(
     }
 }
 
-pub fn remove_found_set(
+pub(crate) fn remove_found_set(
     mut commands: Commands,
     mut ev_found_set: EventReader<FoundSetEvent>,
     mut cards: Query<(Entity, &Card)>,
@@ -112,11 +112,11 @@ pub fn remove_found_set(
 }
 
 impl PlayingField {
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         PlayingField { cards: vec![] }
     }
 
-    pub fn contains_set(&self) -> bool {
+    pub(crate) fn contains_set(&self) -> bool {
         // it is okay to use brute-force O(n^3) algorithm here because:
         // 1. It is close to optimal (can be redued to O(n^2) using hashmap at best)
         // as the problem is NP-complete (http://pbg.cs.illinois.edu/papers/set.pdf)
@@ -143,7 +143,7 @@ impl PlayingField {
         false
     }
 
-    pub fn remove_cards(&mut self, to_remove: Vec<Card>) {
+    pub(crate) fn remove_cards(&mut self, to_remove: Vec<Card>) {
         for card in self.cards.iter_mut() {
             if let Some(internal) = card {
                 if to_remove.contains(internal) {
@@ -153,7 +153,7 @@ impl PlayingField {
         }
     }
 
-    pub fn cards_count(&self) -> usize {
+    pub(crate) fn cards_count(&self) -> usize {
         self.cards.iter().filter(|card| card.is_some()).count()
     }
 
@@ -173,14 +173,13 @@ impl PlayingField {
         self.cards.retain(|card| card.is_some());
     }
 
-    pub fn add_cards(&mut self, mut added: Vec<Card>) {
+    pub(crate) fn add_cards(&mut self, mut added: Vec<Card>) {
         // Add cards, beginning with filling the empty spaces and then appending to the end of the vector
         for card in self.cards.iter_mut() {
             if card.is_some() {
                 continue;
             }
             if let Some(new_card) = added.pop() {
-                println!("FILLING EMPTY SPACE WITH CARD");
                 *card = Some(new_card);
             }
         }
