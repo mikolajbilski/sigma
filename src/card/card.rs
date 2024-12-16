@@ -1,10 +1,10 @@
+use super::properties::*;
 use bevy::{math::vec3, prelude::*};
 use color::CardColor;
 use count::Count;
 use fill::Fill;
 use shape::Shape;
-
-use super::properties::*;
+use std::fmt::Display;
 
 #[derive(Component, Debug, Clone, Copy)]
 pub(crate) struct Card {
@@ -143,5 +143,18 @@ impl PartialEq for Card {
             && self.color == other.color
             && self.count == other.count
             && self.fill == other.fill
+    }
+}
+
+impl Display for Card {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{} {} {} {}",
+            self.count.as_number(),
+            self.fill.as_name(),
+            self.color,
+            self.shape.as_name()
+        )
     }
 }

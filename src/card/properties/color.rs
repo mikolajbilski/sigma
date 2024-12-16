@@ -1,4 +1,5 @@
 use bevy::color::Color;
+use std::fmt::Display;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub(crate) enum CardColor {
@@ -18,5 +19,16 @@ impl CardColor {
             CardColor::Green => Color::srgb_u8(0x00, 0x80, 0x02),
             CardColor::Purple => Color::srgb_u8(0x80, 0x00, 0x80),
         }
+    }
+}
+
+impl Display for CardColor {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match &self {
+            CardColor::Red => "red",
+            CardColor::Green => "green",
+            CardColor::Purple => "purple",
+        };
+        write!(f, "{}", s)
     }
 }
