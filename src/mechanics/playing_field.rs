@@ -92,7 +92,7 @@ pub fn remove_found_set(
         if let Ok(mut game_manager) = game_manager_query.get_single_mut() {
             let set_cards = event.get_cards();
 
-            game_manager.remove_cards(set_cards);
+            game_manager.get_playing_field_mut().remove_cards(set_cards);
 
             println!("Sprites: {}", sprites_query.iter().count());
 

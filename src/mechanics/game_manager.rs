@@ -34,12 +34,7 @@ impl GameManager {
         }
     }
 
-    pub fn remove_cards(&mut self, cards: Vec<Card>) {
-        self.playing_field.remove_cards(cards);
-    }
-
     pub fn start_game(&mut self) {
-        // Init the playing field for 12 starting cards
         println!("GAME BEGINS");
         self.fill_playing_field();
     }
