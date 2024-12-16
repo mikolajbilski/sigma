@@ -19,41 +19,23 @@ pub fn display(
     asset_server: Res<AssetServer>,
 ) {
     if let Ok(mut game_manager) = field_query.get_single_mut() {
-        let playing_field = game_manager.get_playing_field_mut();
-        let cards_count = playing_field.cards_count();
-        let rows = cards_count / 3;
+        let mut cards = game_manager.get_playing_field_mut().get_cards_mut();
 
-        const COLUMN_X: &[f32] = &[-200.0, 0.0, 200.0];
-        // rows are displayed top to bottom, apart from the *REALLY* rare last row
-        const ROW_Y: &[f32] = &[180.0, 60.0, -60.0, -180.0, -300.0, -420.0, 300.0];
-
-        let mut cards = playing_field.get_cards_mut();
-
-        for row_no in 0..rows {
-            for column_no in 0..3 {
-                let card_id = 3 * row_no + column_no;
-                if card_id < cards_count {
-                    if let Some(card) = cards[card_id].as_mut() {
-                        if !card.is_displayed() {
-                            card.set_displayed(true);
-                            // Display this card
-                            //println!("Displaying new card!");
-                            commands
-                                .spawn((
-                                    TransformBundle {
-                                        local: Transform::from_xyz(
-                                            640.0 + COLUMN_X[column_no],
-                                            450.0 + ROW_Y[row_no],
-                                            0.0,
-                                        ),
-                                        ..Default::default()
-                                    },
-                                    InheritedVisibility::default(),
-                                    card.clone(),
-                                ))
-                                .with_children(card.generate_card_entity(&asset_server));
-                        }
-                    }
+        for (id, card) in cards.iter_mut().enumerate() {
+            if let Some(card) = card.as_mut() {
+                if !card.is_displayed() {
+                    card.set_displayed(true);
+                    let (x, y, z) = card_id_to_pos(id);
+                    commands
+                        .spawn((
+                            TransformBundle {
+                                local: Transform::from_xyz(x, y, z),
+                                ..Default::default()
+                            },
+                            InheritedVisibility::default(),
+                            card.clone(),
+                        ))
+                        .with_children(card.generate_card_entity(&asset_server));
                 }
             }
         }
@@ -169,17 +151,6 @@ impl PlayingField {
                 if to_remove.contains(internal) {
                     println!("REMOVING A CARD!");
                     *card = None;
-                }
-            }
-        }
-    }
-
-    pub fn mark_card(&mut self, to_mark: &Card) {
-        for card in self.cards.iter_mut() {
-            if let Some(card) = card {
-                if card == to_mark {
-                    card.mark_for_removal();
-                    return;
                 }
             }
         }

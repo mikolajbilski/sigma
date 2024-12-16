@@ -44,10 +44,6 @@ impl GameManager {
         self.fill_playing_field();
     }
 
-    pub fn get_playing_field(&self) -> &PlayingField {
-        &self.playing_field
-    }
-
     pub fn get_playing_field_mut(&mut self) -> &mut PlayingField {
         &mut self.playing_field
     }
