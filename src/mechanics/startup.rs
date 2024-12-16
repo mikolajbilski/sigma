@@ -46,7 +46,7 @@ fn generate_window() -> WindowPlugin {
     }
 }
 
-pub fn init() {
+pub(crate) fn init() {
     App::new()
         .add_plugins(DefaultPlugins.set(generate_window()))
         .add_systems(Startup, (spawn_camera, timer::setup))
