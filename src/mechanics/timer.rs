@@ -5,7 +5,6 @@ pub struct TimerText;
 
 // Setup the UI
 pub fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-
     // Spawn the timer text
     commands
         .spawn(Text2dBundle {
@@ -15,7 +14,7 @@ pub fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                     font: asset_server.load("fonts/Roboto-Regular.ttf"),
                     font_size: 50.0,
                     color: Color::WHITE,
-                }
+                },
             ),
             transform: Transform::from_xyz(200.0, 800.0, 0.0),
             ..Default::default()
@@ -31,7 +30,10 @@ pub fn update_timer(mut query: Query<&mut Text, With<TimerText>>, time: Res<Time
     let seconds = elapsed_time.as_secs() % 60;
     let hundredths = (elapsed_time.as_millis() % 1000) / 10;
 
-    let formatted_time = format!("{:02}:{:02}:{:02}.{:02}", hours, minutes, seconds, hundredths);
+    let formatted_time = format!(
+        "{:02}:{:02}:{:02}.{:02}",
+        hours, minutes, seconds, hundredths
+    );
 
     for mut text in query.iter_mut() {
         text.sections[0].value = format!("{}", formatted_time);
