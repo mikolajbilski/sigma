@@ -168,7 +168,7 @@ impl PlayingField {
                         (self.cards[i], self.cards[j], self.cards[k])
                     {
                         if is_set(&card1, &card2, &card3) {
-                            println!("SET:\n{:?},\n{:?},\n{:?}", card1, card2, card3);
+                            println!("SET:\n{},\n{},\n{}", card1, card2, card3);
                             return true;
                         }
                     }
