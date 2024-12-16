@@ -1,16 +1,16 @@
-pub mod deck;
-pub use deck::Deck;
-pub mod properties;
+pub(crate) mod deck;
+pub(crate) use deck::Deck;
+pub(crate) mod properties;
 use properties::*;
 
 use bevy::{math::vec3, prelude::*};
 
 #[derive(Component, Debug, Clone, Copy)]
-pub struct Card {
-    pub shape: Shape,
-    pub color: CardColor,
-    pub count: Count,
-    pub fill: Fill,
+pub(crate) struct Card {
+    pub(crate) shape: Shape,
+    pub(crate) color: CardColor,
+    pub(crate) count: Count,
+    pub(crate) fill: Fill,
 
     displayed: bool,
     selected: bool,
@@ -34,23 +34,23 @@ impl Card {
         }
     }
 
-    pub fn get_texture_color(&self) -> Color {
+    pub(crate) fn get_texture_color(&self) -> Color {
         self.color.as_color()
     }
 
-    pub fn get_count(&self) -> i32 {
+    pub(crate) fn get_count(&self) -> i32 {
         self.count.as_number()
     }
 
-    pub fn mark_for_removal(&mut self) {
+    pub(crate) fn mark_for_removal(&mut self) {
         self.to_remove = true;
     }
 
-    pub fn should_remove(&self) -> bool {
+    pub(crate) fn should_remove(&self) -> bool {
         self.to_remove
     }
 
-    pub fn get_asset_path(&self) -> String {
+    pub(crate) fn get_asset_path(&self) -> String {
         format!(
             "sprites/cards/{}_{}.png",
             self.shape.as_name(),
@@ -58,23 +58,23 @@ impl Card {
         )
     }
 
-    pub fn flip_selection(&mut self) {
+    pub(crate) fn flip_selection(&mut self) {
         self.selected = !self.selected;
     }
 
-    pub fn is_selected(&self) -> bool {
+    pub(crate) fn is_selected(&self) -> bool {
         self.selected
     }
 
-    pub fn set_displayed(&mut self, val: bool) {
+    pub(crate) fn set_displayed(&mut self, val: bool) {
         self.displayed = val;
     }
 
-    pub fn is_displayed(&self) -> bool {
+    pub(crate) fn is_displayed(&self) -> bool {
         self.displayed
     }
 
-    pub fn generate_card_entity(
+    pub(crate) fn generate_card_entity(
         &self,
         asset_server: &Res<AssetServer>,
     ) -> impl FnOnce(&mut ChildBuilder) {

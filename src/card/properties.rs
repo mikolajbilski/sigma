@@ -1,7 +1,7 @@
 use bevy::color::Color;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub enum Shape {
+pub(crate) enum Shape {
     Oval,
     Diamond,
     Squiggle,
@@ -22,7 +22,7 @@ impl Shape {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CardColor {
+pub(crate) enum CardColor {
     Red,
     Green,
     Purple,
@@ -43,7 +43,7 @@ impl CardColor {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub enum Count {
+pub(crate) enum Count {
     One,
     Two,
     Three,
@@ -64,7 +64,7 @@ impl Count {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub enum Fill {
+pub(crate) enum Fill {
     Opaque,
     Striped,
     Transparent,
