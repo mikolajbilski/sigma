@@ -1,6 +1,8 @@
 use bevy::prelude::Event;
 
-use crate::card::Card;
+use crate::card::card;
+
+use self::card::Card;
 
 #[derive(Event)]
 pub(crate) struct FoundSetEvent {

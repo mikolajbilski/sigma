@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 
-use crate::card::Card;
+use crate::card::card;
+
+use self::card::Card;
 
 use super::{found_set_event::FoundSetEvent, set::is_set};
 

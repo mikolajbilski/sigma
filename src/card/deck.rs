@@ -1,6 +1,8 @@
 use std::collections::VecDeque;
 
-use super::Card;
+use self::card::Card;
+
+use super::card;
 
 use bevy::prelude::*;
 use rand::seq::SliceRandom;

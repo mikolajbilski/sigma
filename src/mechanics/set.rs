@@ -1,4 +1,6 @@
-use crate::card::Card;
+use crate::card::card;
+
+use self::card::Card;
 
 // Check if the given 3 cards form a set
 pub(crate) fn is_set(card1: &Card, card2: &Card, card3: &Card) -> bool {

@@ -1,6 +1,8 @@
 use bevy::{math::vec3, prelude::*};
 
-use crate::card::Card;
+use crate::card::card;
+
+use self::card::Card;
 
 use super::{found_set_event::FoundSetEvent, game_manager::GameManager, set::is_set};
 

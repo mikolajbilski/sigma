@@ -1,6 +1,8 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 
-use crate::card::Card;
+use crate::card::card;
+
+use self::card::Card;
 
 pub(crate) fn handle_mouse_clicks(
     mouse_input: Res<ButtonInput<MouseButton>>,
