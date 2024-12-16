@@ -1,7 +1,5 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 
-use crate::card::Card;
-
 use super::{
     found_set_event,
     game_manager::GameManager,
@@ -14,14 +12,14 @@ const DEFAULT_WIDTH: f32 = 1280.0;
 const DEFAULT_HEIGHT: f32 = 900.0;
 
 fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
-    let window = window_query.get_single().unwrap();
-
-    println!("WIDTH: {}, HEIGHT: {}", window.width(), window.height());
-
-    commands.spawn(Camera2dBundle {
-        transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
-        ..default()
-    });
+    if let Ok(window) = window_query.get_single() {
+        commands.spawn(Camera2dBundle {
+            transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
+            ..default()
+        });
+    } else {
+        panic!("Unable to spawn a camera as there is no game window!");
+    }
 }
 
 fn startup(mut commands: Commands) {
@@ -29,8 +27,11 @@ fn startup(mut commands: Commands) {
 }
 
 fn start_game(mut game_query: Query<&mut GameManager>) {
-    let game_manager = game_query.get_single_mut().unwrap().into_inner();
-    game_manager.start_game();
+    if let Ok(game_manager) = game_query.get_single_mut() {
+        game_manager.into_inner().start_game();
+    } else {
+        panic!("Failed to locate GameManager!");
+    }
 }
 
 fn generate_window() -> WindowPlugin {
@@ -48,23 +49,20 @@ fn generate_window() -> WindowPlugin {
 pub fn init() {
     App::new()
         .add_plugins(DefaultPlugins.set(generate_window()))
-        .add_systems(Startup, spawn_camera)
-        .add_systems(Startup, (startup, start_game, list_cards).chain())
-        .add_systems(Startup, timer::setup)
-        .add_systems(Update, playing_field::display)
-        .add_systems(Update, input_manager::handle_mouse_clicks)
-        .add_systems(Update, selection_manager::check_selected)
-        .add_systems(Update, remove_found_set)
-        .add_systems(Update, playing_field::move_compressed)
-        .add_systems(Update, timer::update_timer)
+        .add_systems(Startup, (spawn_camera, timer::setup))
+        .add_systems(Startup, (startup, start_game).chain())
+        .add_systems(
+            Update,
+            (
+                playing_field::display,
+                input_manager::handle_mouse_clicks,
+                selection_manager::check_selected,
+                remove_found_set,
+                playing_field::move_compressed,
+                timer::update_timer,
+            ),
+        )
         .add_event::<found_set_event::FoundSetEvent>()
         .add_event::<playing_field::MoveCompressedEvent>()
         .run();
-}
-
-//TODO: temp
-fn list_cards(cards: Query<&Card>) {
-    for card in &cards {
-        println!("{:?}", card);
-    }
 }
