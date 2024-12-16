@@ -3,7 +3,7 @@ use bevy::{math::vec3, prelude::*};
 use super::properties::*;
 
 #[derive(Component, Debug, Clone, Copy)]
-pub struct Card {
+pub(crate) struct Card {
     pub(crate) shape: Shape,
     pub(crate) color: CardColor,
     pub(crate) count: Count,
@@ -81,7 +81,6 @@ impl Card {
         let color = self.get_texture_color();
 
         move |parent: &mut ChildBuilder| {
-            // Spawn the background
             parent
                 .spawn((SpriteBundle {
                     texture: background_texture.clone(),
@@ -93,8 +92,6 @@ impl Card {
                     ..Default::default()
                 },))
                 .with_children(|background| {
-                    // Spawn each content sprite as a child
-
                     let positions = match count {
                         1 => vec![0],
                         2 => vec![-45, 45],
@@ -113,7 +110,8 @@ impl Card {
         }
     }
 
-    pub(crate) fn generate_all() -> Vec<Self> {
+    // Return all possible cards
+    pub(crate) fn all_cards() -> Vec<Self> {
         let shapes = Shape::all_variants();
         let colors = CardColor::all_variants();
         let counts = Count::all_variants();

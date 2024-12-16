@@ -15,7 +15,7 @@ pub(crate) struct Deck {
 
 impl Deck {
     pub(crate) fn new() -> Self {
-        let mut cards = Card::generate_all();
+        let mut cards = Card::all_cards();
 
         cards.shuffle(&mut thread_rng());
 
