@@ -32,6 +32,8 @@ pub fn check_selected(
                 }
             }
 
+            // TODO: update player score and add visual corfirmation
+
             ev_foundset.send(FoundSetEvent::new(to_check));
         } else {
             for mut card in &mut card_query {
