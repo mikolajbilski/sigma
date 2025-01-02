@@ -5,7 +5,7 @@ use super::{
     game_manager::GameManager,
     input_manager,
     playing_field::{self, remove_found_set},
-    selection_manager, timer,
+    score_counter, selection_manager, timer,
 };
 
 const DEFAULT_WIDTH: f32 = 1280.0;
@@ -49,7 +49,7 @@ fn generate_window() -> WindowPlugin {
 pub(crate) fn init() {
     App::new()
         .add_plugins(DefaultPlugins.set(generate_window()))
-        .add_systems(Startup, (spawn_camera, timer::setup))
+        .add_systems(Startup, (spawn_camera, timer::setup, score_counter::setup))
         .add_systems(Startup, (startup, start_game).chain())
         .add_systems(
             Update,
@@ -60,6 +60,7 @@ pub(crate) fn init() {
                 remove_found_set,
                 playing_field::move_to_compress,
                 timer::update_timer,
+                score_counter::update_score,
             ),
         )
         .add_event::<found_set_event::FoundSetEvent>()
