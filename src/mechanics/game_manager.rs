@@ -1,7 +1,5 @@
 // Manages a single game, including the deck, playing field and scores
 
-use std::cmp::max;
-
 use bevy::prelude::{Component, Event};
 
 use crate::card::Deck;
