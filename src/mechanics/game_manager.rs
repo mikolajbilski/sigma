@@ -28,7 +28,7 @@ impl GameManager {
     // Fill the playing field until there are at least 12 cards and there is at least one set
     // Returns true if the game has ended
     pub(crate) fn fill_playing_field(&mut self) -> bool {
-        let cards_to_add = max(12 - self.playing_field.cards_count(), 0);
+        let cards_to_add = 12usize.saturating_sub(self.playing_field.cards_count());
         let added_cards = self.deck.take_cards(cards_to_add);
         self.playing_field.add_cards(added_cards);
 
