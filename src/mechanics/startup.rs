@@ -60,6 +60,7 @@ pub(crate) fn init() {
                 remove_found_set,
                 playing_field::move_to_compress,
                 timer::update_timer,
+                timer::stop_timer,
                 score_counter::update_score,
             ),
         )

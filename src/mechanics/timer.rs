@@ -1,7 +1,11 @@
 use bevy::prelude::*;
 
+use super::game_manager::GameEndedEvent;
+
 #[derive(Component)]
-pub(crate) struct TimerText;
+pub(crate) struct TimerInfo {
+    running: bool,
+}
 
 pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
@@ -17,10 +21,10 @@ pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             transform: Transform::from_xyz(200.0, 800.0, 0.0),
             ..Default::default()
         })
-        .insert(TimerText);
+        .insert(TimerInfo { running: true });
 }
 
-pub(crate) fn update_timer(mut query: Query<&mut Text, With<TimerText>>, time: Res<Time>) {
+pub(crate) fn update_timer(mut query: Query<(&mut Text, &mut TimerInfo)>, time: Res<Time>) {
     let elapsed_time = time.elapsed();
 
     let hours = elapsed_time.as_secs() / 3600;
@@ -28,10 +32,23 @@ pub(crate) fn update_timer(mut query: Query<&mut Text, With<TimerText>>, time: R
     let seconds = elapsed_time.as_secs() % 60;
     let hundredths = (elapsed_time.as_millis() % 1000) / 10;
 
-    for mut text in query.iter_mut() {
-        text.sections[0].value = format!(
-            "{:02}:{:02}:{:02}.{:02}",
-            hours, minutes, seconds, hundredths
-        );
+    for (mut text, timer) in query.iter_mut() {
+        if timer.running {
+            text.sections[0].value = format!(
+                "{:02}:{:02}:{:02}.{:02}",
+                hours, minutes, seconds, hundredths
+            );
+        }
+    }
+}
+
+pub(crate) fn stop_timer(
+    mut query: Query<(&mut Text, &mut TimerInfo)>,
+    mut ev_game_ended: EventReader<GameEndedEvent>,
+) {
+    for _ in ev_game_ended.read() {
+        for (_, mut timer) in query.iter_mut() {
+            timer.running = false;
+        }
     }
 }
