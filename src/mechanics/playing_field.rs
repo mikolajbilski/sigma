@@ -4,7 +4,11 @@ use crate::card::card;
 
 use self::card::Card;
 
-use super::{found_set_event::FoundSetEvent, game_manager::GameManager, set::is_set};
+use super::{
+    found_set_event::FoundSetEvent,
+    game_manager::{GameEndedEvent, GameManager},
+    set::is_set,
+};
 
 #[derive(Component)]
 pub(crate) struct PlayingField {
@@ -79,6 +83,7 @@ pub(crate) fn remove_found_set(
     mut cards: Query<(Entity, &Card)>,
     mut game_manager_query: Query<&mut GameManager>,
     mut ev_move: EventWriter<MoveCardsEvent>,
+    mut ev_end: EventWriter<GameEndedEvent>,
 ) {
     for event in ev_found_set.read() {
         if let Ok(mut game_manager) = game_manager_query.get_single_mut() {
@@ -92,9 +97,14 @@ pub(crate) fn remove_found_set(
                 }
             }
 
-            game_manager.fill_playing_field();
+            let finished = game_manager.fill_playing_field();
 
             ev_move.send(MoveCardsEvent {});
+
+            if finished {
+                println!("GAME ENDED!");
+                ev_end.send(GameEndedEvent {});
+            }
         } else {
             panic!("No game manager found when removing cards after a set was found!");
         }

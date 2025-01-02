@@ -2,7 +2,7 @@ use bevy::{prelude::*, window::PrimaryWindow};
 
 use super::{
     found_set_event,
-    game_manager::GameManager,
+    game_manager::{self, GameManager},
     input_manager,
     playing_field::{self, remove_found_set},
     score_counter, selection_manager, timer,
@@ -65,5 +65,6 @@ pub(crate) fn init() {
         )
         .add_event::<found_set_event::FoundSetEvent>()
         .add_event::<playing_field::MoveCardsEvent>()
+        .add_event::<game_manager::GameEndedEvent>()
         .run();
 }
