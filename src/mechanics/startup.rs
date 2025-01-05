@@ -67,5 +67,6 @@ pub(crate) fn init() {
         .add_event::<found_set_event::FoundSetEvent>()
         .add_event::<playing_field::MoveCardsEvent>()
         .add_event::<game_manager::GameEndedEvent>()
+        .add_event::<selection_manager::CardSelectedEvent>()
         .run();
 }
