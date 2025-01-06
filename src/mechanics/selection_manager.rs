@@ -4,15 +4,18 @@ use crate::card::card;
 
 use self::card::Card;
 
-use super::{found_set_event::FoundSetEvent, set::is_set};
+use super::{found_set_event::FoundSetEvent, playing_field::UnselectAllEvent, set::is_set};
 
 #[derive(Event)]
-pub(crate) struct CardSelectedEvent {}
+pub(crate) struct CardClickedEvent {
+    pub(crate) entity: Entity,
+}
 
 pub(crate) fn check_selected(
     mut card_query: Query<&mut Card>,
     mut ev_foundset: EventWriter<FoundSetEvent>,
-    mut card_selected_event: EventReader<CardSelectedEvent>,
+    mut card_selected_event: EventReader<CardClickedEvent>,
+    mut unselect_all_event: EventWriter<UnselectAllEvent>,
 ) {
     for _ in card_selected_event.read() {
         let mut selected_count: usize = 0;
@@ -23,7 +26,7 @@ pub(crate) fn check_selected(
             }
         }
 
-        if selected_count == 3 {
+        if selected_count >= 3 {
             let mut to_check = vec![];
 
             for card in &mut card_query {
@@ -41,11 +44,7 @@ pub(crate) fn check_selected(
 
                 ev_foundset.send(FoundSetEvent::new(to_check));
             } else {
-                for mut card in &mut card_query {
-                    if card.is_selected() {
-                        card.flip_selection();
-                    }
-                }
+                unselect_all_event.send(UnselectAllEvent {});
             }
         }
     }

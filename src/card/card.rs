@@ -1,4 +1,6 @@
-use super::properties::*;
+use crate::selection_manager::CardClickedEvent;
+
+use super::{highlight_marker::HighlightMarker, properties::*};
 use bevy::{math::vec3, prelude::*};
 use color::CardColor;
 use count::Count;
@@ -16,6 +18,31 @@ pub(crate) struct Card {
     displayed: bool,
     selected: bool,
     to_remove: bool,
+}
+
+pub(crate) fn flip_selection(
+    mut card_entity_query: Query<(Entity, &mut Card)>,
+    mut card_event: EventReader<CardClickedEvent>,
+    mut highlight_query: Query<(Entity, &Parent, &mut Visibility), With<HighlightMarker>>,
+    parent_query: Query<&Parent>,
+) {
+    for event in card_event.read() {
+        let entity = event.entity;
+        let mut card = card_entity_query.get_mut(entity).unwrap().1;
+        card.flip_selection();
+
+        for (_, parent, mut visibility) in highlight_query.iter_mut() {
+            if let Ok(grandparent) = parent_query.get(parent.get()) {
+                if grandparent.get() == entity {
+                    if card.is_selected() {
+                        *visibility = Visibility::Inherited;
+                    } else {
+                        *visibility = Visibility::Hidden;
+                    }
+                }
+            }
+        }
+    }
 }
 
 impl Card {
@@ -83,6 +110,7 @@ impl Card {
         let content_texture = asset_server.load(self.get_asset_path());
         let count = self.get_count();
         let color = self.get_texture_color();
+        let highlight_texture = asset_server.load("sprites/general/card_selection.png");
 
         move |parent: &mut ChildBuilder| {
             parent
@@ -110,6 +138,14 @@ impl Card {
                             ..Default::default()
                         });
                     }
+                    background.spawn((
+                        SpriteBundle {
+                            texture: highlight_texture.clone(),
+                            visibility: Visibility::Hidden,
+                            ..Default::default()
+                        },
+                        HighlightMarker {},
+                    ));
                 });
         }
     }

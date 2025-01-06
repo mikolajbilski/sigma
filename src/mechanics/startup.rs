@@ -1,5 +1,7 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 
+use crate::card::card;
+
 use super::{
     found_set_event,
     game_manager::{self, GameManager},
@@ -62,11 +64,14 @@ pub(crate) fn init() {
                 timer::update_timer,
                 timer::stop_timer,
                 score_counter::update_score,
+                card::flip_selection,
+                playing_field::unselect_all_cards,
             ),
         )
         .add_event::<found_set_event::FoundSetEvent>()
         .add_event::<playing_field::MoveCardsEvent>()
         .add_event::<game_manager::GameEndedEvent>()
-        .add_event::<selection_manager::CardSelectedEvent>()
+        .add_event::<selection_manager::CardClickedEvent>()
+        .add_event::<playing_field::UnselectAllEvent>()
         .run();
 }

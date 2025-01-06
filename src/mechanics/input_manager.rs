@@ -4,13 +4,13 @@ use crate::card::card;
 
 use self::card::Card;
 
-use super::selection_manager::CardSelectedEvent;
+use super::selection_manager::CardClickedEvent;
 
 pub(crate) fn handle_mouse_clicks(
     mouse_input: Res<ButtonInput<MouseButton>>,
     window_query: Query<&Window, With<PrimaryWindow>>,
-    mut card_query: Query<(&mut Card, &Transform)>,
-    mut ev_selected: EventWriter<CardSelectedEvent>,
+    mut card_query: Query<(Entity, &mut Card, &Transform)>,
+    mut ev_selected: EventWriter<CardClickedEvent>,
 ) {
     if mouse_input.just_pressed(MouseButton::Left) {
         if let Ok(win) = window_query.get_single() {
@@ -19,17 +19,15 @@ pub(crate) fn handle_mouse_clicks(
                 let click_x = pos[0];
                 let click_y = 900.0 - pos[1];
 
-                for mut card in &mut card_query {
-                    let card_x = card.1.translation[0];
-                    let card_y = card.1.translation[1];
+                for (entity, _, transform) in &mut card_query {
+                    let card_x = transform.translation[0];
+                    let card_y = transform.translation[1];
                     if click_x > card_x - 90.0
                         && click_x < card_x + 90.0
                         && click_y > card_y - 54.0
                         && click_y < card_y + 54.0
                     {
-                        // TODO: highlight the card
-                        card.0.flip_selection();
-                        ev_selected.send(CardSelectedEvent{});
+                        ev_selected.send(CardClickedEvent { entity });
                         break;
                     }
                 }

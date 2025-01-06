@@ -1,6 +1,6 @@
 use bevy::{math::vec3, prelude::*};
 
-use crate::card::card;
+use crate::card::{card, highlight_marker::HighlightMarker};
 
 use self::card::Card;
 
@@ -18,6 +18,9 @@ pub(crate) struct PlayingField {
 
 #[derive(Event)]
 pub(crate) struct MoveCardsEvent {}
+
+#[derive(Event)]
+pub(crate) struct UnselectAllEvent {}
 
 pub(crate) fn display(
     mut commands: Commands,
@@ -73,6 +76,29 @@ pub(crate) fn move_to_compress(
             }
         } else {
             panic!("No game manager found while trying to move cards around!");
+        }
+    }
+}
+
+pub(crate) fn unselect_all_cards(
+    mut card_query: Query<&mut Card>,
+    mut highlight_query: Query<(Entity, &Parent, &mut Visibility), With<HighlightMarker>>,
+    parent_query: Query<&Parent>,
+    mut unselect_event: EventReader<UnselectAllEvent>,
+) {
+    for _ in unselect_event.read() {
+        // TODO: this sometimes doen't get called
+        println!("UNSELECTING ALL");
+        for mut card in &mut card_query {
+            if card.is_selected() {
+                card.flip_selection();
+            }
+        }
+
+        for (_, parent, mut visibility) in highlight_query.iter_mut() {
+            if parent_query.get(parent.get()).is_ok() {
+                *visibility = Visibility::Hidden;
+            }
         }
     }
 }
