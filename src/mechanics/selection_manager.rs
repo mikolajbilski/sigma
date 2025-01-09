@@ -42,7 +42,6 @@ pub(crate) fn check_selected(
 
                 ev_foundset.send(FoundSetEvent::new(to_check));
             } else {
-                println!("NOT A SET");
                 unselect_all_event.send(UnselectAllEvent {});
             }
         }

@@ -42,7 +42,6 @@ impl GameManager {
     }
 
     pub(crate) fn start_game(&mut self) {
-        println!("GAME BEGINS");
         self.fill_playing_field();
     }
 

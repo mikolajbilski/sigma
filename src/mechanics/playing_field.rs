@@ -87,8 +87,6 @@ pub(crate) fn unselect_all_cards(
     mut unselect_event: EventReader<UnselectAllEvent>,
 ) {
     for _ in unselect_event.read() {
-        // TODO: this sometimes doen't get called
-        println!("UNSELECTING ALL");
         for mut card in &mut card_query {
             if card.is_selected() {
                 card.flip_selection();
@@ -168,7 +166,6 @@ impl PlayingField {
     // this will take effect mostly at the end of the game, when there aren't any cards in the deck
     // it will also take effect when we had more than 12 cards on the field at some point because there were no sets
     fn compress(&mut self) {
-        // TODO: update the transforms of the cards
         self.cards.retain(|card| card.is_some());
     }
 
