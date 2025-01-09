@@ -4,9 +4,10 @@ use crate::card::card;
 
 use self::card::Card;
 
-use super::{card_clicked_event::CardClickedEvent, found_set_event::FoundSetEvent, playing_field::UnselectAllEvent, set::is_set};
-
-
+use super::{
+    card_clicked_event::CardClickedEvent, found_set_event::FoundSetEvent,
+    playing_field::UnselectAllEvent, set::is_set,
+};
 
 pub(crate) fn check_selected(
     mut card_query: Query<&mut Card>,

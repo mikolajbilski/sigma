@@ -3,7 +3,12 @@ use bevy::{prelude::*, window::PrimaryWindow};
 use crate::card::card;
 
 use super::{
-    card_clicked_event::CardClickedEvent, found_set_event, game_manager::{self, GameManager}, input_manager, playing_field::{self, remove_found_set}, score_counter, selection_manager, timer
+    card_clicked_event::CardClickedEvent,
+    found_set_event,
+    game_manager::{self, GameManager},
+    input_manager,
+    playing_field::{self, remove_found_set},
+    score_counter, selection_manager, timer,
 };
 
 const DEFAULT_WIDTH: f32 = 1280.0;
