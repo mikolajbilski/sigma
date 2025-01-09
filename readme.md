@@ -22,17 +22,17 @@ If you are using WSL, check [WSL2 guide for using Bevy](https://bevy-cheatbook.g
 
 ### Part 1
 
-- Basic game loop for signleplayer mode
-- Display, UI
-- Handle dynamically displaying cards from a base shape
+- [ ] Basic game loop for signleplayer mode
+- [ ] Display, UI
+- [ ] Handle dynamically displaying cards from a base shape
 
 ### Part 2
 
-- Menu and game over screen
-- Enable saving progress/settings
-- Implement an AI opponent
-- Track basic stats such as best time and number of games played
-- Customizable AI difficulty
+- [ ] Menu and game over screen
+- [ ] Enable saving progress/settings
+- [ ] Implement an AI opponent
+- [ ] Track basic stats such as best time and number of games played
+- [ ] Customizable AI difficulty
 
 ## Authors
 
