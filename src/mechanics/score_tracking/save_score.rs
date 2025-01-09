@@ -1,4 +1,4 @@
-use bevy::prelude::{Event, EventReader, Query};
+use bevy::prelude::{Event, EventReader, NextState, Query, ResMut};
 
 use crate::{
     save::{
@@ -6,6 +6,7 @@ use crate::{
         saving::{load_top_scores, save_stats},
     },
     score_counter::ScoreInfo,
+    states::AppState,
     timer::TimerInfo,
 };
 
@@ -18,6 +19,7 @@ pub(crate) fn save_score(
     mut ev_save: EventReader<SaveScoreEvent>,
     time_query: Query<&TimerInfo>,
     score_query: Query<&ScoreInfo>,
+    mut next_state: ResMut<NextState<AppState>>,
 ) {
     for _ in ev_save.read() {
         let timer = time_query.get_single().unwrap();
@@ -41,5 +43,8 @@ pub(crate) fn save_score(
         if rank > 0 {
             save_stats(&highscores);
         }
+
+        // We do it here because we want to ensure all stats are saved first
+        next_state.set(AppState::GameOver);
     }
 }

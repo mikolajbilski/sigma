@@ -2,7 +2,10 @@ use bevy::{prelude::*, window::PrimaryWindow};
 
 use crate::{
     card::card,
-    ui::main_menu::{destroy_menu, main_menu_system, spawn_menu},
+    ui::{
+        game_over::{destroy_game_over_screen, game_over_system, spawn_game_over_screen},
+        main_menu::{destroy_menu, main_menu_system, spawn_menu},
+    },
 };
 
 use self::selection_manager::CheckSelectedEvent;
@@ -10,6 +13,7 @@ use self::selection_manager::CheckSelectedEvent;
 use super::{
     card_clicked_event::CardClickedEvent,
     found_set_event,
+    game_cleanup::game_cleanup,
     game_manager::{self, GameManager},
     input_manager,
     playing_field::{self, remove_found_set},
@@ -69,6 +73,7 @@ pub(crate) fn init() {
         )
         .add_systems(OnEnter(AppState::Game), (startup, start_game).chain())
         .add_systems(OnEnter(AppState::Menu), spawn_menu)
+        .add_systems(OnEnter(AppState::GameOver), spawn_game_over_screen)
         .add_systems(
             Update,
             (
@@ -88,6 +93,12 @@ pub(crate) fn init() {
         )
         .add_systems(Update, main_menu_system.run_if(in_state(AppState::Menu)))
         .add_systems(OnExit(AppState::Menu), destroy_menu)
+        .add_systems(
+            Update,
+            game_over_system.run_if(in_state(AppState::GameOver)),
+        )
+        .add_systems(OnExit(AppState::GameOver), destroy_game_over_screen)
+        .add_systems(OnExit(AppState::Game), game_cleanup)
         .add_event::<found_set_event::FoundSetEvent>()
         .add_event::<playing_field::MoveCardsEvent>()
         .add_event::<game_manager::GameEndedEvent>()

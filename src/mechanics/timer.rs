@@ -20,7 +20,12 @@ pub(crate) fn setup(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     current_time: Res<Time>,
+    mut timers: Query<Entity, With<TimerInfo>>,
 ) {
+    for timer in &mut timers {
+        commands.entity(timer).despawn_recursive();
+    }
+
     commands
         .spawn(Text2dBundle {
             text: Text::from_section(

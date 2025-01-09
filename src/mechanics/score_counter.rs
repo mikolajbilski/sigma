@@ -13,7 +13,15 @@ impl ScoreInfo {
     }
 }
 
-pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub(crate) fn setup(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut score_counters: Query<Entity, With<ScoreInfo>>,
+) {
+    for score_counter in &mut score_counters {
+        commands.entity(score_counter).despawn_recursive();
+    }
+
     commands
         .spawn(Text2dBundle {
             text: Text::from_section(

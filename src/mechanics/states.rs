@@ -5,4 +5,5 @@ pub(crate) enum AppState {
     #[default]
     Menu,
     Game,
+    GameOver,
 }
