@@ -56,9 +56,12 @@ pub(crate) fn spawn_game_over_screen(mut commands: Commands) {
         .push_children(&[main_menu_text]);
     commands.entity(stats_button).push_children(&[stats_text]);
     commands.entity(exit_button).push_children(&[exit_text]);
-    commands
-        .entity(container)
-        .push_children(&[game_over_text, main_menu_button, stats_button, exit_button]);
+    commands.entity(container).push_children(&[
+        game_over_text,
+        main_menu_button,
+        stats_button,
+        exit_button,
+    ]);
 }
 
 pub(crate) fn game_over_system(

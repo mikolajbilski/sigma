@@ -16,7 +16,11 @@ impl TimerInfo {
     }
 }
 
-pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>, current_time: Res<Time>) {
+pub(crate) fn setup(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    current_time: Res<Time>,
+) {
     commands
         .spawn(Text2dBundle {
             text: Text::from_section(
