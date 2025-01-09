@@ -1,5 +1,7 @@
 use bevy::{color::Color, prelude::*};
 
+use crate::states::AppState;
+
 use super::button_markers::ButtonTypeMarker;
 
 const BUTTON_COLOR: Color = Color::srgb(0.15, 0.15, 0.15);
@@ -48,13 +50,14 @@ pub(crate) fn main_menu_system(
         (Changed<Interaction>, With<Button>),
     >,
     mut ev_exit: EventWriter<AppExit>,
+    mut next_state: ResMut<NextState<AppState>>,
 ) {
     for (interaction, button_type) in &mut interaction_query {
         if *interaction == Interaction::Pressed {
             match button_type {
                 ButtonTypeMarker::StartGame => {
                     println!("STARTING A GAME!");
-                    //TODO: Start a game
+                    next_state.set(AppState::Game);
                 }
                 ButtonTypeMarker::DisplayStats => {
                     println!("DISPLAYING STATS!");
