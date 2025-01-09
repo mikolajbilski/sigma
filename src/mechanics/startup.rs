@@ -15,7 +15,9 @@ use super::{
     playing_field::{self, remove_found_set},
     score_counter,
     score_tracking::save_score::{save_score, SaveScoreEvent},
-    selection_manager, timer,
+    selection_manager,
+    states::AppState,
+    timer,
 };
 
 const DEFAULT_WIDTH: f32 = 1280.0;
@@ -59,8 +61,14 @@ fn generate_window() -> WindowPlugin {
 pub(crate) fn init() {
     App::new()
         .add_plugins(DefaultPlugins.set(generate_window()))
-        .add_systems(Startup, (spawn_camera, timer::setup, score_counter::setup))
-        .add_systems(Startup, (startup, start_game, spawn_menu).chain())
+        .init_state::<AppState>()
+        .add_systems(Startup, spawn_camera)
+        .add_systems(
+            OnEnter(AppState::Game),
+            (timer::setup, score_counter::setup),
+        )
+        .add_systems(OnEnter(AppState::Game), (startup, start_game).chain())
+        .add_systems(OnEnter(AppState::Menu), spawn_menu)
         .add_systems(
             Update,
             (
@@ -75,9 +83,10 @@ pub(crate) fn init() {
                 card::flip_selection,
                 playing_field::unselect_all_cards,
                 save_score,
-                main_menu_system,
-            ),
+            )
+                .run_if(in_state(AppState::Game)),
         )
+        .add_systems(Update, main_menu_system.run_if(in_state(AppState::Menu)))
         .add_event::<found_set_event::FoundSetEvent>()
         .add_event::<playing_field::MoveCardsEvent>()
         .add_event::<game_manager::GameEndedEvent>()

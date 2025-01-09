@@ -1,5 +1,7 @@
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+use bevy::prelude::States;
+
+#[derive(States, Default, Debug, Clone, Eq, PartialEq, Hash)]
 pub(crate) enum AppState {
-    Menu,
+    #[default] Menu,
     Game,
 }
