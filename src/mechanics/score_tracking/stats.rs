@@ -40,4 +40,8 @@ impl Stats {
             0
         }
     }
+
+    pub(crate) fn get_played_games(&self) -> u32 {
+        self.games_played
+    }
 }
