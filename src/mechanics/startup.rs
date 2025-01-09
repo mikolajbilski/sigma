@@ -5,12 +5,7 @@ use crate::card::card;
 use self::selection_manager::CheckSelectedEvent;
 
 use super::{
-    card_clicked_event::CardClickedEvent,
-    found_set_event,
-    game_manager::{self, GameManager},
-    input_manager,
-    playing_field::{self, remove_found_set},
-    score_counter, selection_manager, timer,
+    card_clicked_event::CardClickedEvent, found_set_event, game_manager::{self, GameManager}, input_manager, playing_field::{self, remove_found_set}, score_counter, score_tracking::save_score::SaveScoreEvent, selection_manager, timer
 };
 
 const DEFAULT_WIDTH: f32 = 1280.0;
@@ -77,5 +72,6 @@ pub(crate) fn init() {
         .add_event::<CardClickedEvent>()
         .add_event::<playing_field::UnselectAllEvent>()
         .add_event::<CheckSelectedEvent>()
+        .add_event::<SaveScoreEvent>()
         .run();
 }
