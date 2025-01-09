@@ -22,9 +22,9 @@ If you are using WSL, check [WSL2 guide for using Bevy](https://bevy-cheatbook.g
 
 ### Part 1
 
-- [ ] Basic game loop for signleplayer mode
-- [ ] Display, UI
-- [ ] Handle dynamically displaying cards from a base shape
+- [x] Basic game loop for signleplayer mode
+- [x] Display, UI
+- [x] Handle dynamically displaying cards from a base shape
 
 ### Part 2
 
