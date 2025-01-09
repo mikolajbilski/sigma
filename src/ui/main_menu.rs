@@ -44,10 +44,7 @@ pub(crate) fn spawn_menu(mut commands: Commands) {
 
 pub(crate) fn main_menu_system(
     mut interaction_query: Query<
-        (
-            &Interaction,
-            &ButtonTypeMarker,
-        ),
+        (&Interaction, &ButtonTypeMarker),
         (Changed<Interaction>, With<Button>),
     >,
     mut ev_exit: EventWriter<AppExit>,
@@ -58,15 +55,15 @@ pub(crate) fn main_menu_system(
                 ButtonTypeMarker::StartGame => {
                     println!("STARTING A GAME!");
                     //TODO: Start a game
-                },
+                }
                 ButtonTypeMarker::DisplayStats => {
                     println!("DISPLAYING STATS!");
                     //TODO: Display stats
-                },
+                }
                 ButtonTypeMarker::Exit => {
                     println!("EXITING!");
                     ev_exit.send(AppExit::Success);
-                },
+                }
             };
         }
     }
@@ -83,9 +80,7 @@ fn generate_button_bundle_text(content: &str) -> TextBundle {
     )
 }
 
-fn generate_button(
-    buton_type: ButtonTypeMarker,
-) -> (ButtonBundle, ButtonTypeMarker) {
+fn generate_button(buton_type: ButtonTypeMarker) -> (ButtonBundle, ButtonTypeMarker) {
     (
         ButtonBundle {
             style: Style {
@@ -101,6 +96,6 @@ fn generate_button(
             background_color: BUTTON_COLOR.into(),
             ..default()
         },
-        buton_type
+        buton_type,
     )
 }
