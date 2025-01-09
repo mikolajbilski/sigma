@@ -18,14 +18,14 @@ fn get_save_file_path() -> String {
     save_dir.join("stats.json").to_str().unwrap().to_string()
 }
 
-pub fn save_stats(stats: &Stats) {
+pub(crate) fn save_stats(stats: &Stats) {
     let file_path = get_save_file_path();
     let file = File::create(&file_path).unwrap_or_else(|e| panic!("Failed to create savefile: {}", e));
     serde_json::to_writer(file, &stats).unwrap_or_else(|e| panic!("Failed to write to savefile: {}", e));
 }
 
 // If the savefile doesn't exist or deserializing it fails, return empty scores
-pub fn load_top_scores() -> Stats {
+pub(crate) fn load_top_scores() -> Stats {
     let file_path = get_save_file_path();
 
     match OpenOptions::new().read(true).open(&file_path) {
