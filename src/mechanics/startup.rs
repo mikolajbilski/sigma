@@ -2,7 +2,7 @@ use bevy::{prelude::*, window::PrimaryWindow};
 
 use crate::{
     card::card,
-    ui::main_menu::{main_menu_system, spawn_menu},
+    ui::main_menu::{destroy_menu, main_menu_system, spawn_menu},
 };
 
 use self::selection_manager::CheckSelectedEvent;
@@ -87,6 +87,7 @@ pub(crate) fn init() {
                 .run_if(in_state(AppState::Game)),
         )
         .add_systems(Update, main_menu_system.run_if(in_state(AppState::Menu)))
+        .add_systems(OnExit(AppState::Menu), destroy_menu)
         .add_event::<found_set_event::FoundSetEvent>()
         .add_event::<playing_field::MoveCardsEvent>()
         .add_event::<game_manager::GameEndedEvent>()

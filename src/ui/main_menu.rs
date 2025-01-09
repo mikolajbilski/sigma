@@ -6,18 +6,24 @@ use super::button_markers::ButtonTypeMarker;
 
 const BUTTON_COLOR: Color = Color::srgb(0.15, 0.15, 0.15);
 
+#[derive(Component)]
+pub(crate) struct MenuMarker {}
+
 pub(crate) fn spawn_menu(mut commands: Commands) {
-    let container_node = NodeBundle {
-        style: Style {
-            width: Val::Percent(100.0),
-            height: Val::Percent(100.0),
-            align_items: AlignItems::Center,
-            justify_content: JustifyContent::Center,
-            flex_direction: FlexDirection::Column,
+    let container_node = (
+        NodeBundle {
+            style: Style {
+                width: Val::Percent(100.0),
+                height: Val::Percent(100.0),
+                align_items: AlignItems::Center,
+                justify_content: JustifyContent::Center,
+                flex_direction: FlexDirection::Column,
+                ..default()
+            },
             ..default()
         },
-        ..default()
-    };
+        MenuMarker {},
+    );
 
     let start_game_button = generate_button(ButtonTypeMarker::StartGame);
     let stats_button = generate_button(ButtonTypeMarker::DisplayStats);
@@ -101,4 +107,13 @@ fn generate_button(buton_type: ButtonTypeMarker) -> (ButtonBundle, ButtonTypeMar
         },
         buton_type,
     )
+}
+
+pub(crate) fn destroy_menu(
+    mut commands: Commands,
+    mut menu_query: Query<Entity, With<MenuMarker>>,
+) {
+    for menu_item in &mut menu_query {
+        commands.entity(menu_item).despawn_recursive();
+    }
 }
