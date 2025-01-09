@@ -4,7 +4,7 @@ use crate::card::card;
 
 use self::card::Card;
 
-use super::selection_manager::CardClickedEvent;
+use super::card_clicked_event::CardClickedEvent;
 
 pub(crate) fn handle_mouse_clicks(
     mouse_input: Res<ButtonInput<MouseButton>>,

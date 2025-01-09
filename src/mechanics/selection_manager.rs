@@ -4,12 +4,9 @@ use crate::card::card;
 
 use self::card::Card;
 
-use super::{found_set_event::FoundSetEvent, playing_field::UnselectAllEvent, set::is_set};
+use super::{card_clicked_event::CardClickedEvent, found_set_event::FoundSetEvent, playing_field::UnselectAllEvent, set::is_set};
 
-#[derive(Event)]
-pub(crate) struct CardClickedEvent {
-    pub(crate) entity: Entity,
-}
+
 
 pub(crate) fn check_selected(
     mut card_query: Query<&mut Card>,
@@ -44,6 +41,7 @@ pub(crate) fn check_selected(
 
                 ev_foundset.send(FoundSetEvent::new(to_check));
             } else {
+                println!("NOT A SET");
                 unselect_all_event.send(UnselectAllEvent {});
             }
         }

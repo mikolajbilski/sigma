@@ -1,4 +1,4 @@
-use crate::selection_manager::CardClickedEvent;
+use crate::card_clicked_event::CardClickedEvent;
 
 use super::{highlight_marker::HighlightMarker, properties::*};
 use bevy::{math::vec3, prelude::*};
@@ -39,6 +39,8 @@ pub(crate) fn flip_selection(
                     } else {
                         *visibility = Visibility::Hidden;
                     }
+
+                    break;
                 }
             }
         }
