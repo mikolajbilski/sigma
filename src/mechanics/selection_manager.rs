@@ -5,17 +5,20 @@ use crate::card::card;
 use self::card::Card;
 
 use super::{
-    card_clicked_event::CardClickedEvent, found_set_event::FoundSetEvent,
+    found_set_event::FoundSetEvent,
     playing_field::UnselectAllEvent, set::is_set,
 };
+
+#[derive(Event)]
+pub(crate) struct CheckSelectedEvent {}
 
 pub(crate) fn check_selected(
     mut card_query: Query<&mut Card>,
     mut ev_foundset: EventWriter<FoundSetEvent>,
-    mut card_selected_event: EventReader<CardClickedEvent>,
+    mut check_selected_event: EventReader<CheckSelectedEvent>,
     mut unselect_all_event: EventWriter<UnselectAllEvent>,
 ) {
-    for _ in card_selected_event.read() {
+    for _ in check_selected_event.read() {
         let mut selected_count: usize = 0;
 
         for card in &card_query {

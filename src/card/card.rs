@@ -1,4 +1,4 @@
-use crate::card_clicked_event::CardClickedEvent;
+use crate::{card_clicked_event::CardClickedEvent, selection_manager::CheckSelectedEvent};
 
 use super::{highlight_marker::HighlightMarker, properties::*};
 use bevy::{math::vec3, prelude::*};
@@ -25,11 +25,13 @@ pub(crate) fn flip_selection(
     mut card_event: EventReader<CardClickedEvent>,
     mut highlight_query: Query<(Entity, &Parent, &mut Visibility), With<HighlightMarker>>,
     parent_query: Query<&Parent>,
+    mut ev_check_selected: EventWriter<CheckSelectedEvent>,
 ) {
     for event in card_event.read() {
         let entity = event.entity;
         let mut card = card_entity_query.get_mut(entity).unwrap().1;
         card.flip_selection();
+        ev_check_selected.send(CheckSelectedEvent {});
 
         for (_, parent, mut visibility) in highlight_query.iter_mut() {
             if let Ok(grandparent) = parent_query.get(parent.get()) {
@@ -39,7 +41,6 @@ pub(crate) fn flip_selection(
                     } else {
                         *visibility = Visibility::Hidden;
                     }
-
                     break;
                 }
             }
