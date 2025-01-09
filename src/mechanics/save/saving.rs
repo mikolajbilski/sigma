@@ -2,7 +2,7 @@ use std::fs::{File, OpenOptions};
 
 use directories::ProjectDirs;
 
-use crate::stats::Stats;
+use crate::score_tracking::stats::Stats;
 
 fn get_save_file_path() -> String {
     let proj_dirs = ProjectDirs::from("com", "mimuw_students", "sigma_game")

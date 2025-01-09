@@ -29,7 +29,10 @@ pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             transform: Transform::from_xyz(200.0, 800.0, 0.0),
             ..Default::default()
         })
-        .insert(TimerInfo { running: true, time: Duration::new(0, 0) });
+        .insert(TimerInfo {
+            running: true,
+            time: Duration::new(0, 0),
+        });
 }
 
 pub(crate) fn update_timer(mut query: Query<(&mut Text, &mut TimerInfo)>, time: Res<Time>) {
