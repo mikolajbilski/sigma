@@ -7,6 +7,12 @@ pub(crate) struct ScoreInfo {
     score: u32,
 }
 
+impl ScoreInfo {
+    pub(crate) fn get_score(&self) -> u32 {
+        self.score
+    }
+}
+
 pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn(Text2dBundle {

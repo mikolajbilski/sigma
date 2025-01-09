@@ -9,6 +9,12 @@ pub(crate) struct TimerInfo {
     time: Duration,
 }
 
+impl TimerInfo {
+    pub(crate) fn get_time(&self) -> Duration {
+        self.time
+    }
+}
+
 pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn(Text2dBundle {
@@ -29,17 +35,9 @@ pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
 pub(crate) fn update_timer(mut query: Query<(&mut Text, &mut TimerInfo)>, time: Res<Time>) {
     let elapsed_time = time.elapsed();
 
-    let hours = elapsed_time.as_secs() / 3600;
-    let minutes = (elapsed_time.as_secs() % 3600) / 60;
-    let seconds = elapsed_time.as_secs() % 60;
-    let hundredths = (elapsed_time.as_millis() % 1000) / 10;
-
     for (mut text, mut timer) in query.iter_mut() {
         if timer.running {
-            text.sections[0].value = format!(
-                "{:02}:{:02}:{:02}.{:02}",
-                hours, minutes, seconds, hundredths
-            );
+            text.sections[0].value = duration_to_string(elapsed_time);
             timer.time = elapsed_time;
         }
     }
@@ -54,4 +52,16 @@ pub(crate) fn stop_timer(
             timer.running = false;
         }
     }
+}
+
+pub(crate) fn duration_to_string(duration: Duration) -> String {
+    let hours = duration.as_secs() / 3600;
+    let minutes = (duration.as_secs() % 3600) / 60;
+    let seconds = duration.as_secs() % 60;
+    let hundredths = (duration.as_millis() % 1000) / 10;
+
+    format!(
+        "{:02}:{:02}:{:02}.{:02}",
+        hours, minutes, seconds, hundredths
+    )
 }
