@@ -1,6 +1,6 @@
 use bevy::{color::Color, prelude::*};
 
-const NORMAL_BUTTON: Color = Color::srgb(0.15, 0.15, 0.15);
+const BUTTON_COLOR: Color = Color::srgb(0.15, 0.15, 0.15);
 
 pub(crate) fn spawn_menu(mut commands: Commands) {
     let container_node = NodeBundle {
@@ -24,7 +24,7 @@ pub(crate) fn spawn_menu(mut commands: Commands) {
             ..default()
         },
         border_color: BorderColor(Color::BLACK),
-        background_color: NORMAL_BUTTON.into(),
+        background_color: BUTTON_COLOR.into(),
         ..default()
     };
 
