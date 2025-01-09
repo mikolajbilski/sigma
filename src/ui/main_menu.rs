@@ -11,6 +11,7 @@ pub(crate) fn spawn_menu(mut commands: Commands) {
             height: Val::Percent(100.0),
             align_items: AlignItems::Center,
             justify_content: JustifyContent::Center,
+            flex_direction: FlexDirection::Column,
             ..default()
         },
         ..default()
@@ -82,6 +83,7 @@ fn generate_button(
                 border: UiRect::all(Val::Px(5.0)),
                 justify_content: JustifyContent::Center,
                 align_items: AlignItems::Center,
+                margin: UiRect::all(Val::Px(10.0)),
                 ..default()
             },
             border_color: BorderColor(Color::BLACK),
