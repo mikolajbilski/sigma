@@ -1,6 +1,6 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 
-use crate::card::card;
+use crate::{card::card, ui::main_menu::{main_menu_system, spawn_menu}};
 
 use self::selection_manager::CheckSelectedEvent;
 
@@ -57,7 +57,7 @@ pub(crate) fn init() {
     App::new()
         .add_plugins(DefaultPlugins.set(generate_window()))
         .add_systems(Startup, (spawn_camera, timer::setup, score_counter::setup))
-        .add_systems(Startup, (startup, start_game).chain())
+        .add_systems(Startup, (startup, start_game, spawn_menu).chain())
         .add_systems(
             Update,
             (
@@ -72,6 +72,7 @@ pub(crate) fn init() {
                 card::flip_selection,
                 playing_field::unselect_all_cards,
                 save_score,
+                main_menu_system,
             ),
         )
         .add_event::<found_set_event::FoundSetEvent>()
