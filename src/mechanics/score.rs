@@ -2,7 +2,7 @@ use std::{cmp::Ordering, time::Duration};
 
 use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Eq, Serialize, Deserialize)]
+#[derive(PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub(crate) struct Score {
     time: u128,
     sets: u32,
