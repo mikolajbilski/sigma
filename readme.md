@@ -29,9 +29,9 @@ If you are using WSL, check [WSL2 guide for using Bevy](https://bevy-cheatbook.g
 ### Part 2
 
 - [ ] Menu and game over screen
-- [ ] Enable saving progress/settings
+- [x] Enable saving progress
 - [ ] Implement an AI opponent
-- [ ] Track basic stats such as best time and number of games played
+- [x] Track basic stats such as best time and number of games played
 - [ ] Customizable AI difficulty
 
 ## Authors
