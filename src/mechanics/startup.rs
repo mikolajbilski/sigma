@@ -2,6 +2,8 @@ use bevy::{prelude::*, window::PrimaryWindow};
 
 use crate::card::card;
 
+use self::selection_manager::CheckSelectedEvent;
+
 use super::{
     card_clicked_event::CardClickedEvent,
     found_set_event,
@@ -74,5 +76,6 @@ pub(crate) fn init() {
         .add_event::<game_manager::GameEndedEvent>()
         .add_event::<CardClickedEvent>()
         .add_event::<playing_field::UnselectAllEvent>()
+        .add_event::<CheckSelectedEvent>()
         .run();
 }
