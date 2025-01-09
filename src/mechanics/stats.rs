@@ -11,6 +11,13 @@ pub(crate) struct Stats {
 }
 
 impl Stats {
+    pub fn new() -> Self {
+        Stats {
+            games_played: 0,
+            highscores: vec![],
+        }
+    }
+
     fn add_score(&mut self, new_score: Score) {
         self.games_played += 1;
 
