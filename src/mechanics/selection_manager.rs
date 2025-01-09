@@ -4,10 +4,7 @@ use crate::card::card;
 
 use self::card::Card;
 
-use super::{
-    found_set_event::FoundSetEvent,
-    playing_field::UnselectAllEvent, set::is_set,
-};
+use super::{found_set_event::FoundSetEvent, playing_field::UnselectAllEvent, set::is_set};
 
 #[derive(Event)]
 pub(crate) struct CheckSelectedEvent {}

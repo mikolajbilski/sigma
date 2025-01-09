@@ -33,7 +33,7 @@ impl Stats {
         if self.highscores.len() > SCORES_TRACKED {
             self.highscores.pop();
         }
-        
+
         if let Some(index) = self.highscores.iter().position(|x| *x == new_score) {
             index + 1
         } else {

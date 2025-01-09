@@ -1,13 +1,13 @@
-pub(crate) mod save;
 pub(crate) mod card_clicked_event;
 pub(crate) mod found_set_event;
 pub(crate) mod game_manager;
 pub(crate) mod input_manager;
 pub(crate) mod playing_field;
+pub(crate) mod save;
+pub(crate) mod score;
 pub(crate) mod score_counter;
 pub(crate) mod selection_manager;
 pub(crate) mod set;
 pub(crate) mod startup;
-pub(crate) mod timer;
 pub(crate) mod stats;
-pub(crate) mod score;
+pub(crate) mod timer;
