@@ -11,7 +11,7 @@ use super::{
     input_manager,
     playing_field::{self, remove_found_set},
     score_counter,
-    score_tracking::save_score::SaveScoreEvent,
+    score_tracking::save_score::{save_score, SaveScoreEvent},
     selection_manager, timer,
 };
 
@@ -71,6 +71,7 @@ pub(crate) fn init() {
                 score_counter::update_score,
                 card::flip_selection,
                 playing_field::unselect_all_cards,
+                save_score,
             ),
         )
         .add_event::<found_set_event::FoundSetEvent>()

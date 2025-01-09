@@ -5,9 +5,7 @@ use crate::card::{card, highlight_marker::HighlightMarker};
 use self::card::Card;
 
 use super::{
-    found_set_event::FoundSetEvent,
-    game_manager::{GameEndedEvent, GameManager},
-    set::is_set,
+    found_set_event::FoundSetEvent, game_manager::{GameEndedEvent, GameManager}, score_tracking::save_score::SaveScoreEvent, set::is_set
 };
 
 #[derive(Component)]
@@ -108,6 +106,7 @@ pub(crate) fn remove_found_set(
     mut game_manager_query: Query<&mut GameManager>,
     mut ev_move: EventWriter<MoveCardsEvent>,
     mut ev_end: EventWriter<GameEndedEvent>,
+    mut ev_save: EventWriter<SaveScoreEvent>,
 ) {
     for event in ev_found_set.read() {
         if let Ok(mut game_manager) = game_manager_query.get_single_mut() {
@@ -128,6 +127,7 @@ pub(crate) fn remove_found_set(
             if finished {
                 println!("GAME ENDED!");
                 ev_end.send(GameEndedEvent {});
+                ev_save.send(SaveScoreEvent{});
             }
         } else {
             panic!("No game manager found when removing cards after a set was found!");
