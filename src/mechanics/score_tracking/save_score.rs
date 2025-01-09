@@ -1,6 +1,13 @@
 use bevy::prelude::{Event, EventReader, Query};
 
-use crate::{save::{date::get_current_date, saving::{load_top_scores, save_stats}}, score_counter::ScoreInfo, timer::TimerInfo};
+use crate::{
+    save::{
+        date::get_current_date,
+        saving::{load_top_scores, save_stats},
+    },
+    score_counter::ScoreInfo,
+    timer::TimerInfo,
+};
 
 use super::score::Score;
 

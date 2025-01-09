@@ -5,7 +5,10 @@ use crate::card::{card, highlight_marker::HighlightMarker};
 use self::card::Card;
 
 use super::{
-    found_set_event::FoundSetEvent, game_manager::{GameEndedEvent, GameManager}, score_tracking::save_score::SaveScoreEvent, set::is_set
+    found_set_event::FoundSetEvent,
+    game_manager::{GameEndedEvent, GameManager},
+    score_tracking::save_score::SaveScoreEvent,
+    set::is_set,
 };
 
 #[derive(Component)]
@@ -127,7 +130,7 @@ pub(crate) fn remove_found_set(
             if finished {
                 println!("GAME ENDED!");
                 ev_end.send(GameEndedEvent {});
-                ev_save.send(SaveScoreEvent{});
+                ev_save.send(SaveScoreEvent {});
             }
         } else {
             panic!("No game manager found when removing cards after a set was found!");
