@@ -1,7 +1,10 @@
+use serde::{Deserialize, Serialize};
+
 use super::score::Score;
 
 const SCORES_TRACKED: usize = 10;
 
+#[derive(Serialize, Deserialize)]
 pub(crate) struct Stats {
     games_played: u32,
     highscores: Vec<Score>,
