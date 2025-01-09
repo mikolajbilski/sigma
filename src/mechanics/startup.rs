@@ -1,6 +1,9 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 
-use crate::{card::card, ui::main_menu::{main_menu_system, spawn_menu}};
+use crate::{
+    card::card,
+    ui::main_menu::{main_menu_system, spawn_menu},
+};
 
 use self::selection_manager::CheckSelectedEvent;
 
