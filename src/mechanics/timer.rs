@@ -7,15 +7,16 @@ use super::game_manager::GameEndedEvent;
 pub(crate) struct TimerInfo {
     running: bool,
     time: Duration,
+    start_time: Duration,
 }
 
 impl TimerInfo {
     pub(crate) fn get_time(&self) -> Duration {
-        self.time
+        self.time - self.start_time
     }
 }
 
-pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>, current_time: Res<Time>) {
     commands
         .spawn(Text2dBundle {
             text: Text::from_section(
@@ -32,6 +33,7 @@ pub(crate) fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         .insert(TimerInfo {
             running: true,
             time: Duration::new(0, 0),
+            start_time: current_time.elapsed(),
         });
 }
 
@@ -40,7 +42,7 @@ pub(crate) fn update_timer(mut query: Query<(&mut Text, &mut TimerInfo)>, time: 
 
     for (mut text, mut timer) in query.iter_mut() {
         if timer.running {
-            text.sections[0].value = duration_to_string(elapsed_time);
+            text.sections[0].value = duration_to_string(elapsed_time - timer.start_time);
             timer.time = elapsed_time;
         }
     }
