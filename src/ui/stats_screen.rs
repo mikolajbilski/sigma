@@ -2,7 +2,10 @@ use bevy::prelude::*;
 
 use crate::states::AppState;
 
-use super::{button_markers::ButtonTypeMarker, buttons::{generate_button, generate_button_bundle_text}};
+use super::{
+    button_markers::ButtonTypeMarker,
+    buttons::{generate_button, generate_button_bundle_text},
+};
 
 #[derive(Component)]
 pub(crate) struct StatsMarker {}
@@ -25,9 +28,7 @@ pub(crate) fn spawn_stats(mut commands: Commands) {
 
     let start_game_button = generate_button(ButtonTypeMarker::MainMenu);
 
-    let start_game_text = commands
-        .spawn(generate_button_bundle_text("Go back"))
-        .id();
+    let start_game_text = commands.spawn(generate_button_bundle_text("Go back")).id();
 
     let container = commands.spawn(container_node).id();
     let start_game_button = commands.spawn(start_game_button).id();

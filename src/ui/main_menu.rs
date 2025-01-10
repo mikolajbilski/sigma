@@ -2,7 +2,10 @@ use bevy::prelude::*;
 
 use crate::states::AppState;
 
-use super::{button_markers::ButtonTypeMarker, buttons::{generate_button, generate_button_bundle_text}};
+use super::{
+    button_markers::ButtonTypeMarker,
+    buttons::{generate_button, generate_button_bundle_text},
+};
 
 #[derive(Component)]
 pub(crate) struct MenuMarker {}
