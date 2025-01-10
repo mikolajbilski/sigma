@@ -66,8 +66,7 @@ pub(crate) fn main_menu_system(
                     next_state.set(AppState::Game);
                 }
                 ButtonTypeMarker::DisplayStats => {
-                    println!("DISPLAYING STATS!");
-                    //TODO: Display stats
+                    next_state.set(AppState::Stats);
                 }
                 ButtonTypeMarker::Exit => {
                     ev_exit.send(AppExit::Success);

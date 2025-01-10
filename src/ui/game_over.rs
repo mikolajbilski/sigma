@@ -80,8 +80,7 @@ pub(crate) fn game_over_system(
                     next_state.set(AppState::Menu);
                 }
                 ButtonTypeMarker::DisplayStats => {
-                    println!("DISPLAYING STATS!");
-                    //TODO: Display stats
+                    next_state.set(AppState::Stats);
                 }
                 ButtonTypeMarker::Exit => {
                     ev_exit.send(AppExit::Success);
