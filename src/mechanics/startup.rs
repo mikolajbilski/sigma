@@ -4,7 +4,8 @@ use crate::{
     card::card,
     ui::{
         game_over::{destroy_game_over_screen, game_over_system, spawn_game_over_screen},
-        main_menu::{destroy_menu, main_menu_system, spawn_menu}, stats_screen::{destroy_stats, spawn_stats, stats_system},
+        main_menu::{destroy_menu, main_menu_system, spawn_menu},
+        stats_screen::{destroy_stats, spawn_stats, stats_system},
     },
 };
 

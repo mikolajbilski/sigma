@@ -28,7 +28,9 @@ pub(crate) fn spawn_stats(mut commands: Commands) {
 
     let go_back_button = generate_button(ButtonTypeMarker::MainMenu);
 
-    let go_back_text = commands.spawn(generate_button_bundle_text("Main Menu")).id();
+    let go_back_text = commands
+        .spawn(generate_button_bundle_text("Main Menu"))
+        .id();
 
     let container = commands.spawn(container_node).id();
     let go_back_button = commands.spawn(go_back_button).id();
@@ -36,9 +38,7 @@ pub(crate) fn spawn_stats(mut commands: Commands) {
     commands
         .entity(go_back_button)
         .push_children(&[go_back_text]);
-    commands
-        .entity(container)
-        .push_children(&[go_back_button]);
+    commands.entity(container).push_children(&[go_back_button]);
 }
 
 pub(crate) fn stats_system(
