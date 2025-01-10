@@ -4,9 +4,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub(crate) struct Score {
-    time: u128,
-    sets: u32,
-    date: String,
+    pub(crate) time: u128,
+    pub(crate) sets: u32,
+    pub(crate) date: String,
 }
 
 impl Score {
@@ -17,6 +17,20 @@ impl Score {
 
     pub(crate) fn seconds_per_set(&self) -> f32 {
         (self.time as f32 / self.sets as f32) / 1000.0
+    }
+
+    pub(crate) fn time_as_string(&self) -> String {
+        let total_seconds = self.time / 1000;
+
+        let hours = total_seconds / 3600;
+        let minutes = (total_seconds % 3600) / 60;
+        let seconds = total_seconds % 60;
+        let hundredths = (self.time % 1000) / 10;
+
+        format!(
+            "{:02}:{:02}:{:02}.{:02}",
+            hours, minutes, seconds, hundredths
+        )
     }
 }
 

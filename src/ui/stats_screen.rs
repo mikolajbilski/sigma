@@ -30,7 +30,7 @@ pub(crate) fn spawn_stats(mut commands: Commands) {
 
     let games_played_info = generate_games_played_text(&stats);
 
-    let stats_table = create_stats_table(&stats);
+    let stats_table = create_stats_table(&mut commands, &stats);
 
     let go_back_button = generate_button(ButtonTypeMarker::MainMenu);
 
@@ -40,13 +40,14 @@ pub(crate) fn spawn_stats(mut commands: Commands) {
 
     let container = commands.spawn(container_node).id();
     let games_played_info = commands.spawn(games_played_info).id();
-    let stats_table = commands.spawn(stats_table).id();
     let go_back_button = commands.spawn(go_back_button).id();
 
     commands
         .entity(go_back_button)
         .push_children(&[go_back_text]);
-    commands.entity(container).push_children(&[games_played_info, stats_table, go_back_button]);
+    commands
+        .entity(container)
+        .push_children(&[games_played_info, stats_table, go_back_button]);
 }
 
 pub(crate) fn stats_system(
@@ -77,8 +78,70 @@ pub(crate) fn destroy_stats(
     }
 }
 
-fn create_stats_table(stats: &Stats) -> NodeBundle {
-    todo!()
+fn create_stats_table(commands: &mut Commands, stats: &Stats) -> Entity {
+    commands
+        .spawn(NodeBundle {
+            style: Style {
+                width: Val::Percent(80.0),
+                height: Val::Percent(80.0),
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::FlexStart,
+                flex_direction: FlexDirection::Column,
+                ..default()
+            },
+            ..default()
+        })
+        .with_children(|parent| {
+            parent
+                .spawn(NodeBundle {
+                    style: Style {
+                        width: Val::Percent(100.0),
+                        height: Val::Percent(80.0),
+                        justify_content: JustifyContent::SpaceBetween,
+                        flex_direction: FlexDirection::Row,
+                        ..default()
+                    },
+                    ..default()
+                })
+                .with_children(|header| {
+                    header.spawn(generate_table_text("Rank"));
+                    header.spawn(generate_table_text("Time"));
+                    header.spawn(generate_table_text("Sets"));
+                    header.spawn(generate_table_text("Date"));
+                });
+
+            for (rank, score) in stats.get_highscores().iter().enumerate() {
+                parent
+                    .spawn(NodeBundle {
+                        style: Style {
+                            width: Val::Percent(100.0),
+                            height: Val::Percent(80.0),
+                            justify_content: JustifyContent::SpaceBetween,
+                            flex_direction: FlexDirection::Row,
+                            ..default()
+                        },
+                        ..default()
+                    })
+                    .with_children(|row| {
+                        row.spawn(generate_table_text(&(rank + 1).to_string()));
+                        row.spawn(generate_table_text(&score.time_as_string()));
+                        row.spawn(generate_table_text(&score.sets.to_string()));
+                        row.spawn(generate_table_text(&score.date));
+                    });
+            }
+        })
+        .id()
+}
+
+fn generate_table_text(content: &str) -> TextBundle {
+    TextBundle::from_section(
+        content,
+        TextStyle {
+            font_size: 30.0,
+            color: Color::srgb(0.9, 0.9, 0.9),
+            ..default()
+        },
+    )
 }
 
 fn generate_games_played_text(stats: &Stats) -> TextBundle {

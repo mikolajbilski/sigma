@@ -44,4 +44,8 @@ impl Stats {
     pub(crate) fn get_played_games(&self) -> u32 {
         self.games_played
     }
+
+    pub(crate) fn get_highscores(&self) -> &Vec<Score> {
+        &self.highscores
+    }
 }
