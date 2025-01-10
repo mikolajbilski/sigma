@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::states::AppState;
+use crate::{score_counter::ScoreInfo, states::AppState, timer::TimerInfo};
 
 use super::{
     button_markers::ButtonTypeMarker,
@@ -95,8 +95,18 @@ pub(crate) fn game_over_system(
 pub(crate) fn destroy_game_over_screen(
     mut commands: Commands,
     mut menu_query: Query<Entity, With<GameOverMarker>>,
+    mut timer_query: Query<Entity, With<TimerInfo>>,
+    mut score_query: Query<Entity, With<ScoreInfo>>,
 ) {
     for menu_item in &mut menu_query {
         commands.entity(menu_item).despawn_recursive();
+    }
+
+    for timer in &mut timer_query {
+        commands.entity(timer).despawn_recursive();
+    }
+
+    for score in &mut score_query {
+        commands.entity(score).despawn_recursive();
     }
 }
