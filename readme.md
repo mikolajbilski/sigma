@@ -28,7 +28,7 @@ If you are using WSL, check [WSL2 guide for using Bevy](https://bevy-cheatbook.g
 
 ### Part 2
 
-- [ ] Menu and game over screen
+- [x] Menu and game over screen
 - [x] Enable saving progress
 - [x] Track basic stats such as best time and number of games played
 
