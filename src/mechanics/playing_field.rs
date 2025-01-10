@@ -128,7 +128,6 @@ pub(crate) fn remove_found_set(
             ev_move.send(MoveCardsEvent {});
 
             if finished {
-                println!("GAME ENDED!");
                 ev_end.send(GameEndedEvent {});
                 ev_save.send(SaveScoreEvent {});
             }

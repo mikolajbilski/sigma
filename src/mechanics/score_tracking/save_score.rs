@@ -36,10 +36,6 @@ pub(crate) fn save_score(
 
         let rank = highscores.add_score(new_score);
 
-        //TODO: give user some feedback about his score
-        println!("Your rank is: {}", rank);
-        println!("You have played {} games", highscores.get_played_games());
-
         if rank > 0 {
             save_stats(&highscores);
         }
