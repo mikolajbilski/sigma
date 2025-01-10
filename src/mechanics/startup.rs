@@ -4,7 +4,7 @@ use crate::{
     card::card,
     ui::{
         game_over::{destroy_game_over_screen, game_over_system, spawn_game_over_screen},
-        main_menu::{destroy_menu, main_menu_system, spawn_menu},
+        main_menu::{destroy_menu, main_menu_system, spawn_menu}, stats_screen::{destroy_stats, spawn_stats, stats_system},
     },
 };
 
@@ -74,6 +74,7 @@ pub(crate) fn init() {
         .add_systems(OnEnter(AppState::Game), (startup, start_game).chain())
         .add_systems(OnEnter(AppState::Menu), spawn_menu)
         .add_systems(OnEnter(AppState::GameOver), spawn_game_over_screen)
+        .add_systems(OnEnter(AppState::Stats), spawn_stats)
         .add_systems(
             Update,
             (
@@ -99,6 +100,8 @@ pub(crate) fn init() {
         )
         .add_systems(OnExit(AppState::GameOver), destroy_game_over_screen)
         .add_systems(OnExit(AppState::Game), game_cleanup)
+        .add_systems(Update, stats_system.run_if(in_state(AppState::Stats)))
+        .add_systems(OnExit(AppState::Stats), destroy_stats)
         .add_event::<found_set_event::FoundSetEvent>()
         .add_event::<playing_field::MoveCardsEvent>()
         .add_event::<game_manager::GameEndedEvent>()

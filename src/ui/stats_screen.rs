@@ -26,19 +26,19 @@ pub(crate) fn spawn_stats(mut commands: Commands) {
         StatsMarker {},
     );
 
-    let start_game_button = generate_button(ButtonTypeMarker::MainMenu);
+    let go_back_button = generate_button(ButtonTypeMarker::MainMenu);
 
-    let start_game_text = commands.spawn(generate_button_bundle_text("Go back")).id();
+    let go_back_text = commands.spawn(generate_button_bundle_text("Go back")).id();
 
     let container = commands.spawn(container_node).id();
-    let start_game_button = commands.spawn(start_game_button).id();
+    let go_back_button = commands.spawn(go_back_button).id();
 
     commands
-        .entity(start_game_button)
-        .push_children(&[start_game_text]);
+        .entity(go_back_button)
+        .push_children(&[go_back_text]);
     commands
         .entity(container)
-        .push_children(&[start_game_button]);
+        .push_children(&[go_back_button]);
 }
 
 pub(crate) fn stats_system(
