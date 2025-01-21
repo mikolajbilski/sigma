@@ -20,10 +20,16 @@ fn get_save_file_path() -> String {
 
 pub(crate) fn save_stats(stats: &Stats) {
     let file_path = get_save_file_path();
-    let file =
-        File::create(&file_path).unwrap_or_else(|e| panic!("Failed to create savefile: {}", e));
-    serde_json::to_writer(file, &stats)
-        .unwrap_or_else(|e| panic!("Failed to write to savefile: {}", e));
+    let file = match File::create(&file_path) {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("Failed to create savefile: {}", e);
+            return;
+        }
+    };
+    if let Err(e) = serde_json::to_writer(file, &stats) {
+        eprintln!("Failed to write to savefile: {}", e);
+    }
 }
 
 // If the savefile doesn't exist or deserializing it fails, return empty scores
