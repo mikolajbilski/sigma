@@ -15,7 +15,9 @@
 ## Installation
 
 Use 'cargo run' to start the game.
+
 If you are running into problems, check [Bevy troubleshooting](https://bevyengine.org/learn/quick-start/troubleshooting/)
+
 If you are using WSL, check [WSL2 guide for using Bevy](https://bevy-cheatbook.github.io/platforms/windows/wsl2.html)
 
 ## Development
