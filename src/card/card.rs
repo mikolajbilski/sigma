@@ -145,6 +145,7 @@ impl Card {
                         SpriteBundle {
                             texture: highlight_texture.clone(),
                             visibility: Visibility::Hidden,
+                            transform: Transform::from_xyz(0.0, 0.0, 2.0),
                             ..Default::default()
                         },
                         HighlightMarker {},
