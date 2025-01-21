@@ -28,31 +28,30 @@ pub(crate) fn display(
     mut field_query: Query<&mut GameManager>,
     asset_server: Res<AssetServer>,
 ) {
-    if let Ok(mut game_manager) = field_query.get_single_mut() {
-        let mut cards = game_manager.get_playing_field_mut().get_cards_mut();
+    let Ok(mut game_manager) = field_query.get_single_mut() else {
+        panic!("No game manager found!");
+    };
+    let mut cards = game_manager.get_playing_field_mut().get_cards_mut();
 
-        for (id, card) in cards.iter_mut().enumerate() {
-            if let Some(card) = card.as_mut() {
-                if !card.is_displayed() {
-                    card.set_displayed(true);
+    for (id, card) in cards.iter_mut().enumerate() {
+        if let Some(card) = card.as_mut() {
+            if !card.is_displayed() {
+                card.set_displayed(true);
 
-                    let (x, y, z) = card_id_to_pos(id);
+                let (x, y, z) = card_id_to_pos(id);
 
-                    commands
-                        .spawn((
-                            TransformBundle {
-                                local: Transform::from_xyz(x, y, z),
-                                ..Default::default()
-                            },
-                            InheritedVisibility::default(),
-                            *card,
-                        ))
-                        .with_children(card.generate_card_entity(&asset_server));
-                }
+                commands
+                    .spawn((
+                        TransformBundle {
+                            local: Transform::from_xyz(x, y, z),
+                            ..Default::default()
+                        },
+                        InheritedVisibility::default(),
+                        *card,
+                    ))
+                    .with_children(card.generate_card_entity(&asset_server));
             }
         }
-    } else {
-        panic!("No game manager found!");
     }
 }
 
@@ -63,20 +62,19 @@ pub(crate) fn move_to_compress(
     mut move_compressed_event: EventReader<MoveCardsEvent>,
 ) {
     for _ in move_compressed_event.read() {
-        if let Ok(mut game_manager) = field_query.get_single_mut() {
-            let playing_field = game_manager.get_playing_field_mut();
-            for (id, card) in playing_field.get_cards().iter().enumerate() {
-                if let Some(card) = card {
-                    for (displayed_card, mut transform) in cards_query.iter_mut() {
-                        if *card == *displayed_card {
-                            let (x, y, z) = card_id_to_pos(id);
-                            transform.translation = vec3(x, y, z);
-                        }
+        let Ok(mut game_manager) = field_query.get_single_mut() else {
+            panic!("No game manager found while trying to move cards around!");
+        };
+        let playing_field = game_manager.get_playing_field_mut();
+        for (id, card) in playing_field.get_cards().iter().enumerate() {
+            if let Some(card) = card {
+                for (displayed_card, mut transform) in cards_query.iter_mut() {
+                    if *card == *displayed_card {
+                        let (x, y, z) = card_id_to_pos(id);
+                        transform.translation = vec3(x, y, z);
                     }
                 }
             }
-        } else {
-            panic!("No game manager found while trying to move cards around!");
         }
     }
 }
@@ -112,27 +110,26 @@ pub(crate) fn remove_found_set(
     mut ev_save: EventWriter<SaveScoreEvent>,
 ) {
     for event in ev_found_set.read() {
-        if let Ok(mut game_manager) = game_manager_query.get_single_mut() {
-            let set_cards = event.get_cards();
-
-            game_manager.get_playing_field_mut().remove_cards(set_cards);
-
-            for (entity, card) in &mut cards {
-                if card.should_remove() {
-                    commands.entity(entity).despawn_recursive();
-                }
-            }
-
-            let finished = game_manager.fill_playing_field();
-
-            ev_move.send(MoveCardsEvent {});
-
-            if finished {
-                ev_end.send(GameEndedEvent {});
-                ev_save.send(SaveScoreEvent {});
-            }
-        } else {
+        let Ok(mut game_manager) = game_manager_query.get_single_mut() else {
             panic!("No game manager found when removing cards after a set was found!");
+        };
+        let set_cards = event.get_cards();
+
+        game_manager.get_playing_field_mut().remove_cards(set_cards);
+
+        for (entity, card) in &mut cards {
+            if card.should_remove() {
+                commands.entity(entity).despawn_recursive();
+            }
+        }
+
+        let finished = game_manager.fill_playing_field();
+
+        ev_move.send(MoveCardsEvent {});
+
+        if finished {
+            ev_end.send(GameEndedEvent {});
+            ev_save.send(SaveScoreEvent {});
         }
     }
 }

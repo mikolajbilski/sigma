@@ -29,14 +29,13 @@ const DEFAULT_WIDTH: f32 = 1280.0;
 const DEFAULT_HEIGHT: f32 = 900.0;
 
 fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
-    if let Ok(window) = window_query.get_single() {
-        commands.spawn(Camera2dBundle {
-            transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
-            ..default()
-        });
-    } else {
+    let Ok(window) = window_query.get_single() else {
         panic!("Unable to spawn a camera as there is no game window!");
-    }
+    };
+    commands.spawn(Camera2dBundle {
+        transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
+        ..default()
+    });
 }
 
 fn startup(mut commands: Commands) {
