@@ -11,6 +11,8 @@ use super::{
     set::is_set,
 };
 
+const CHEATS: bool = true;
+
 #[derive(Component)]
 pub(crate) struct PlayingField {
     // Represents 3x4 - 3x7 field of cards, None means we want to refill this space
@@ -200,6 +202,9 @@ impl PlayingField {
                         (self.cards[i], self.cards[j], self.cards[k])
                     {
                         if is_set(&card1, &card2, &card3) {
+                            if CHEATS {
+                                println!("SET:\n{},\n{},\n{}", card1, card2, card3);
+                            }
                             return true;
                         }
                     }
